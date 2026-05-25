@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNEL EP — Panel de Control Ejecutivo · Alumbrado Público</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/dist/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:#f7f7f5;color:#1a1a1a;line-height:1.5;min-width:900px}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:#f0f0ee}
+::-webkit-scrollbar-thumb{background:#c8c7c3;border-radius:3px}
+
+/* ── Layout ── */
+.page{max-width:1320px;margin:0 auto;padding:24px 28px 40px}
+
+/* ── Header ── */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid rgba(0,0,0,0.1);margin-bottom:16px}
+.hdr-left{display:flex;align-items:center;gap:12px}
+.hdr-icon{width:40px;height:40px;border-radius:8px;background:#e6f1fb;display:flex;align-items:center;justify-content:center}
+.hdr-icon i{font-size:20px;color:#185fa5}
+.hdr-title{font-size:17px;font-weight:600;color:#1a1a1a}
+.hdr-sub{font-size:11px;color:#5f5e5a;margin-top:1px}
+.hdr-right{display:flex;align-items:center;gap:8px}
+
+/* ── Badges ── */
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;font-family:inherit}
+.badge-success{background:#eaf3de;color:#3b6d11;border:1px solid #c0dd97}
+.badge-neutral{background:#f0f0ee;color:#5f5e5a;border:1px solid rgba(0,0,0,0.12)}
+.badge-info{background:#e6f1fb;color:#185fa5;border:1px solid #b5d4f4}
+.dot{width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block}
+
+/* ── Filters ── */
+.filter-bar{background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;padding:10px 16px;margin-bottom:16px}
+.filter-inner{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.filter-label-main{display:flex;align-items:center;gap:5px;font-size:11px;color:#5f5e5a;font-weight:500;text-transform:uppercase;letter-spacing:.5px}
+.filter-label-main i{font-size:13px}
+.fg{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.fg-label{font-size:10px;color:#888780}
+.sep{width:1px;height:18px;background:rgba(0,0,0,0.12);flex-shrink:0}
+.filter-btn{padding:4px 12px;border-radius:20px;border:1px solid rgba(0,0,0,0.15);background:transparent;color:#5f5e5a;cursor:pointer;font-size:11px;font-family:'Inter',sans-serif;font-weight:400;transition:all .15s}
+.filter-btn:hover{background:#f0f0ee}
+.filter-btn.active{border-color:#0f6e56;background:rgba(29,158,117,.12);color:#0f6e56;font-weight:500}
+
+/* ── KPI Grid ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px}
+.kpi-card{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:14px 16px}
+.kpi-icon-row{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.kpi-icon-row i{font-size:14px}
+.kpi-lbl{font-size:10px;color:#5f5e5a;font-weight:500}
+.kpi-val{font-size:21px;font-weight:600;color:#1a1a1a;line-height:1.1}
+.kpi-sub{font-size:10px;color:#888780;margin-top:3px}
+
+/* ── Section divider ── */
+.sdiv{display:flex;align-items:center;gap:10px;margin:16px 0 10px}
+.sdiv h3{font-size:10px;font-weight:600;color:#888780;white-space:nowrap;text-transform:uppercase;letter-spacing:.8px}
+.sdiv-line{flex:1;height:1px;background:rgba(0,0,0,0.08)}
+
+/* ── Chart Grids ── */
+.g2{display:grid;grid-template-columns:1fr 1.45fr;gap:14px;margin-bottom:14px}
+.g2r{display:grid;grid-template-columns:1.45fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1.55fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.g2e{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;margin-bottom:14px}
+
+/* ── Chart Card ── */
+.cc{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:14px 16px}
+.ct{font-size:12px;font-weight:600;color:#1a1a1a;margin-bottom:2px}
+.cs{font-size:10px;color:#888780;margin-bottom:10px}
+
+/* ── Legend ── */
+.leg{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.li{display:flex;align-items:center;gap:4px;font-size:10px;color:#5f5e5a}
+.ld{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+
+/* ── Progress bars ── */
+.pr{margin-bottom:7px}
+.pl{display:flex;justify-content:space-between;font-size:10px;color:#5f5e5a;margin-bottom:3px}
+.pb{height:4px;background:rgba(0,0,0,0.08);border-radius:2px}
+.pf{height:100%;border-radius:2px}
+
+/* ── Tech transition ── */
+.tech-tr{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:10px}
+.ttr-lbl{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.ttr-bar{height:7px;background:rgba(0,0,0,0.08);border-radius:3px}
+.ttr-fill{height:100%;border-radius:3px}
+.ttr-sub{font-size:10px;color:#888780;margin-top:3px}
+
+/* ── Insights ── */
+.ins-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.ins-c{border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:14px}
+.ins-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.ins-icon i{font-size:15px}
+.ins-tag{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.ins-title{font-size:12px;font-weight:600;color:#1a1a1a;margin-bottom:5px}
+.ins-text{font-size:11px;color:#5f5e5a;line-height:1.6}
+
+/* ── Stats mini box ── */
+.stat-mini{background:#f7f7f5;border-radius:8px;padding:10px 12px;margin-top:10px}
+.stat-mini .lbl{font-size:10px;color:#888780;margin-bottom:3px}
+.stat-mini .val{font-size:18px;font-weight:600;color:#1a1a1a}
+.stat-mini .sub{font-size:10px;color:#888780}
+
+/* ── Footer ── */
+.ftr{text-align:center;padding:14px 0 6px;border-top:1px solid rgba(0,0,0,0.08);margin-top:4px}
+.ftr p{font-size:10px;color:#888780}
+
+/* ── Chart canvas wrap ── */
+.cwrap{position:relative;width:100%}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-icon"><i class="ti ti-bulb"></i></div>
+    <div>
+      <div class="hdr-title">CNEL EP — Alumbrado Público</div>
+      <div class="hdr-sub">Panel de control ejecutivo &nbsp;·&nbsp; Inventario de luminarias</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <span class="badge badge-success"><span class="dot"></span> Actualizado May 2026</span>
+    <span class="badge badge-neutral"><i class="ti ti-database" style="font-size:11px"></i> 112,741 registros</span>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <div class="filter-label-main"><i class="ti ti-adjustments-horizontal"></i> Filtros</div>
+    <div class="fg" id="fg-prov">
+      <span class="fg-label">PROVINCIA:</span>
+      <button class="filter-btn active" onclick="sf('prov','ALL',this)">Todas</button>
+      <button class="filter-btn" onclick="sf('prov','EL ORO',this)">El Oro</button>
+      <button class="filter-btn" onclick="sf('prov','GUAYAS',this)">Guayas</button>
+      <button class="filter-btn" onclick="sf('prov','AZUAY',this)">Azuay</button>
+      <button class="filter-btn" onclick="sf('prov','LOJA',this)">Loja</button>
+    </div>
+    <div class="sep"></div>
+    <div class="fg" id="fg-tech">
+      <span class="fg-label">TECNOLOGÍA:</span>
+      <button class="filter-btn active" onclick="sf('tech','ALL',this)">Todas</button>
+      <button class="filter-btn" onclick="sf('tech','Sodio',this)">Sodio</button>
+      <button class="filter-btn" onclick="sf('tech','LED',this)">LED</button>
+      <button class="filter-btn" onclick="sf('tech','Proyector',this)">Proyector</button>
+    </div>
+    <div class="sep"></div>
+    <div class="fg" id="fg-prop">
+      <span class="fg-label">PROPIEDAD:</span>
+      <button class="filter-btn active" onclick="sf('prop','ALL',this)">Todas</button>
+      <button class="filter-btn" onclick="sf('prop','Distribuidora',this)">Distribuidora</button>
+      <button class="filter-btn" onclick="sf('prop','Municipal',this)">Municipal</button>
+    </div>
+  </div>
+</div>
+
+<!-- KPI CARDS -->
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-icon-row"><i class="ti ti-bulb" style="color:#1d9e75"></i><span class="kpi-lbl">Luminarias totales</span></div>
+    <div class="kpi-val" id="kv-total">112,741</div>
+    <div class="kpi-sub" id="ks-total">4 provincias activas</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon-row"><i class="ti ti-bolt" style="color:#ba7517"></i><span class="kpi-lbl">Potencia instalada</span></div>
+    <div class="kpi-val" id="kv-pot">20,857 kW</div>
+    <div class="kpi-sub">Capacidad total del sistema</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon-row"><i class="ti ti-chart-line" style="color:#7f77dd"></i><span class="kpi-lbl">Consumo mensual</span></div>
+    <div class="kpi-val" id="kv-cons">7.27M kWh</div>
+    <div class="kpi-sub">Estimado a 11.6 hrs/día</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon-row"><i class="ti ti-leaf" style="color:#3b6d11"></i><span class="kpi-lbl">Tecnología LED</span></div>
+    <div class="kpi-val" id="kv-led" style="color:#3b6d11">12.8%</div>
+    <div class="kpi-sub" id="ks-led">14,406 unidades modernas</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon-row"><i class="ti ti-activity" style="color:#d85a30"></i><span class="kpi-lbl">Bajo medición</span></div>
+    <div class="kpi-val">3.7%</div>
+    <div class="kpi-sub">4,129 luminarias monitoreadas</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon-row"><i class="ti ti-adjustments" style="color:#7f77dd"></i><span class="kpi-lbl">Doble nivel</span></div>
+    <div class="kpi-val">6.3%</div>
+    <div class="kpi-sub">7,115 con regulación avanzada</div>
+  </div>
+</div>
+
+<!-- ROW 1: Tecnología + Cantones -->
+<div class="sdiv"><div class="sdiv-line"></div><h3>Tecnología y geografía</h3><div class="sdiv-line"></div></div>
+<div class="g2">
+  <div class="cc">
+    <p class="ct">Distribución por tecnología</p>
+    <p class="cs">Tipo de luminaria instalada</p>
+    <div style="display:flex;gap:14px;align-items:center">
+      <div class="cwrap" style="width:140px;height:140px;flex-shrink:0">
+        <canvas id="techC"></canvas>
+      </div>
+      <div id="tleg" class="leg" style="flex-direction:column;gap:6px"></div>
+    </div>
+  </div>
+  <div class="cc">
+    <p class="ct">Top cantones por luminarias</p>
+    <p class="cs">Distribución geográfica cantonal</p>
+    <div id="cwrap" class="cwrap" style="height:280px"><canvas id="cantC"></canvas></div>
+  </div>
+</div>
+
+<!-- ROW 2: Potencia + Clasificacion -->
+<div class="sdiv"><div class="sdiv-line"></div><h3>Potencia y clasificación AP</h3><div class="sdiv-line"></div></div>
+<div class="g2r">
+  <div class="cc">
+    <p class="ct">Distribución por potencia (W)</p>
+    <p class="cs">Capacidad eléctrica instalada por luminaria</p>
+    <div class="cwrap" style="height:220px"><canvas id="potC"></canvas></div>
+  </div>
+  <div class="cc">
+    <p class="ct">Clasificación de alumbrado AP</p>
+    <p class="cs">Tipo de uso según normativa vigente</p>
+    <div class="cwrap" style="height:160px"><canvas id="claC"></canvas></div>
+    <div id="cleg" class="leg" style="margin-top:8px"></div>
+  </div>
+</div>
+
+<!-- ROW 3: Subestaciones + Propiedad -->
+<div class="sdiv"><div class="sdiv-line"></div><h3>Red de distribución</h3><div class="sdiv-line"></div></div>
+<div class="g2e">
+  <div class="cc">
+    <p class="ct">Principales subestaciones</p>
+    <p class="cs">Luminarias por punto de alimentación eléctrica</p>
+    <div class="cwrap" style="height:300px"><canvas id="subC"></canvas></div>
+  </div>
+  <div class="cc">
+    <p class="ct">Titularidad de activos</p>
+    <p class="cs">Propiedad de las luminarias instaladas</p>
+    <div class="cwrap" style="height:150px"><canvas id="prpC"></canvas></div>
+    <div style="margin-top:16px">
+      <div class="pr"><div class="pl"><span>Distribuidora</span><span style="font-weight:600">89.6% — 100,975 ud.</span></div><div class="pb"><div class="pf" style="width:89.6%;background:#1d9e75"></div></div></div>
+      <div class="pr"><div class="pl"><span>Municipal</span><span style="font-weight:600">10.3% — 11,645 ud.</span></div><div class="pb"><div class="pf" style="width:10.3%;background:#7f77dd"></div></div></div>
+      <div class="pr"><div class="pl"><span>Particular</span><span style="font-weight:600">0.1% — 121 ud.</span></div><div class="pb"><div class="pf" style="width:2%;background:#d85a30"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ROW 4: Provincias + Medicion + Nivel -->
+<div class="sdiv"><div class="sdiv-line"></div><h3>Cobertura provincial y control energético</h3><div class="sdiv-line"></div></div>
+<div class="g3">
+  <div class="cc">
+    <p class="ct">Distribución provincial</p>
+    <p class="cs">Cobertura total por provincia concesionada</p>
+    <div class="cwrap" style="height:190px"><canvas id="prvC"></canvas></div>
+  </div>
+  <div class="cc">
+    <p class="ct">Estado de medición</p>
+    <p class="cs">Control energético activo</p>
+    <div class="cwrap" style="height:140px"><canvas id="medC"></canvas></div>
+    <div id="mleg" class="leg" style="justify-content:center;margin-top:8px"></div>
+  </div>
+  <div class="cc">
+    <p class="ct">Control de nivel</p>
+    <p class="cs">Simple vs. doble regulación</p>
+    <div class="cwrap" style="height:140px"><canvas id="nivC"></canvas></div>
+    <div id="nleg" class="leg" style="justify-content:center;margin-top:8px"></div>
+  </div>
+</div>
+
+<!-- ROW 5: Modernizacion + Regimen operación -->
+<div class="sdiv"><div class="sdiv-line"></div><h3>Régimen operativo y modernización tecnológica</h3><div class="sdiv-line"></div></div>
+<div class="g2">
+  <div class="cc">
+    <p class="ct">Estado de transición tecnológica hacia LED</p>
+    <p class="cs">Progreso del parque luminario hacia tecnologías eficientes</p>
+    <div class="tech-tr">
+      <div>
+        <div class="ttr-lbl"><span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:#ba7517;display:inline-block"></span><span style="color:#5f5e5a">Sodio</span></span><strong>79.6%</strong></div>
+        <div class="ttr-bar"><div class="ttr-fill" style="width:79.6%;background:#ba7517"></div></div>
+        <div class="ttr-sub">89,757 ud. — tecnología dominante a reemplazar</div>
+      </div>
+      <div>
+        <div class="ttr-lbl"><span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:#1d9e75;display:inline-block"></span><span style="color:#5f5e5a">LED</span></span><strong style="color:#3b6d11">12.8%</strong></div>
+        <div class="ttr-bar"><div class="ttr-fill" style="width:12.8%;background:#1d9e75"></div></div>
+        <div class="ttr-sub">14,406 ud. — tecnología objetivo de eficiencia</div>
+      </div>
+      <div>
+        <div class="ttr-lbl"><span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:#7f77dd;display:inline-block"></span><span style="color:#5f5e5a">Proyector</span></span><strong>5.0%</strong></div>
+        <div class="ttr-bar"><div class="ttr-fill" style="width:5%;background:#7f77dd"></div></div>
+        <div class="ttr-sub">5,621 ud. — uso especializado en espacios</div>
+      </div>
+      <div>
+        <div class="ttr-lbl"><span style="display:flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:#b4b2a9;display:inline-block"></span><span style="color:#5f5e5a">Otros</span></span><strong>2.6%</strong></div>
+        <div class="ttr-bar"><div class="ttr-fill" style="width:2.6%;background:#b4b2a9"></div></div>
+        <div class="ttr-sub">2,957 ud. — mercurio, semáforos, cámaras</div>
+      </div>
+    </div>
+  </div>
+  <div class="cc">
+    <p class="ct">Régimen de operación nocturna</p>
+    <p class="cs">Horas de funcionamiento por luminaria</p>
+    <div class="cwrap" style="height:140px"><canvas id="hrC"></canvas></div>
+    <div id="hrleg" class="leg" style="justify-content:center;margin-top:8px"></div>
+    <div class="stat-mini">
+      <div class="lbl">Horas prom. / noche</div>
+      <div class="val">11.6 <span style="font-size:12px;font-weight:400;color:#888780">horas</span></div>
+      <div class="sub">Promedio ponderado del sistema</div>
+    </div>
+  </div>
+</div>
+
+<!-- INSIGHTS -->
+<div class="sdiv">
+  <div class="sdiv-line"></div>
+  <h3>Análisis automático</h3>
+  <div class="sdiv-line"></div>
+  <span class="badge badge-info" style="white-space:nowrap"><i class="ti ti-cpu" style="font-size:10px"></i> Insights ejecutivos</span>
+</div>
+<div class="ins-grid">
+  <div class="ins-c">
+    <div class="ins-icon" style="background:rgba(186,117,23,.12)"><i class="ti ti-bolt" style="color:#ba7517"></i></div>
+    <div class="ins-tag" style="color:#ba7517">Oportunidad energética</div>
+    <div class="ins-title">Dominio de tecnología Sodio</div>
+    <div class="ins-text">El 79.6% usa Sodio (89,757 ud.). Migrar a LED puede reducir el consumo hasta un 50%, equivalente a ~3.6M kWh/mes de ahorro potencial.</div>
+  </div>
+  <div class="ins-c">
+    <div class="ins-icon" style="background:rgba(29,158,117,.12)"><i class="ti ti-map-pin" style="color:#1d9e75"></i></div>
+    <div class="ins-tag" style="color:#1d9e75">Concentración geográfica</div>
+    <div class="ins-title">El Oro domina con 92.3%</div>
+    <div class="ins-text">Machala concentra 39,295 ud. (34.8%). Las 10 subestaciones principales alimentan más del 88% del inventario total de la concesión.</div>
+  </div>
+  <div class="ins-c">
+    <div class="ins-icon" style="background:rgba(216,90,48,.12)"><i class="ti ti-plug" style="color:#d85a30"></i></div>
+    <div class="ins-tag" style="color:#d85a30">Control energético</div>
+    <div class="ins-title">Telemetría insuficiente</div>
+    <div class="ins-text">Solo el 3.7% está bajo medición activa. Ampliar la supervisión sobre 20,857 kW instalados mejoraría significativamente el control operativo.</div>
+  </div>
+  <div class="ins-c">
+    <div class="ins-icon" style="background:rgba(127,119,221,.12)"><i class="ti ti-trending-up" style="color:#7f77dd"></i></div>
+    <div class="ins-tag" style="color:#7f77dd">Potencial de ahorro anual</div>
+    <div class="ins-title">~43M kWh si migra a LED</div>
+    <div class="ins-text">La transición completa desde Sodio a LED sobre 89,757 luminarias representa una reducción estimada del 45% en costos operativos de energía.</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="ftr">
+  <p>CNEL EP — Corporación Nacional de Electricidad &nbsp;·&nbsp; Panel Ejecutivo de Luminarias AP &nbsp;·&nbsp; Base: 112,741 registros &nbsp;·&nbsp; Mayo 2026</p>
+</div>
+
+</div><!-- /page -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+/* ─── DATA ─── */
+const D={
+  tech:{
+    ALL:{Sodio:89757,LED:14406,Proyector:5621,Semaforizacion:1192,Mercurio:853,'Metal Halide':543,Camara:369},
+    'EL ORO':{Sodio:83200,LED:12900,Proyector:5200,Semaforizacion:1100,Mercurio:810,'Metal Halide':498,Camara:348},
+    GUAYAS:{Sodio:2780,LED:1100,Proyector:550,Camara:250,Semaforizacion:154},
+    AZUAY:{Sodio:2820,LED:380,Proyector:380,Mercurio:176},
+    LOJA:{Sodio:85,LED:10}
+  },
+  cant:{
+    ALL:[['Machala',39295],['Pasaje',13580],['Santa Rosa',12595],['Arenillas',7517],['Huaquillas',6730],['El Guabo',6621],['Piñas',5191],['Zaruma',4212],['Balao',2563],['C.P. Enríquez',2385]],
+    'EL ORO':[['Machala',39295],['Pasaje',13580],['Santa Rosa',12595],['Arenillas',7517],['Huaquillas',6730],['El Guabo',6621],['Piñas',5191],['Zaruma',4212],['Balao',2563],['C.P. Enríquez',2385]],
+    GUAYAS:[['Guayaquil',1985],['Naranjal',286],['Milagro',201],['Daule',186],['Balzar',98]],
+    AZUAY:[['C.P. Enríquez',2385],['Pucará',786],['Cuenca',348],['Girón',194],['Sto. Isabel',43]],
+    LOJA:[['Loja',95]]
+  },
+  tot:{ALL:112741,'EL ORO':104056,GUAYAS:4834,AZUAY:3756,LOJA:95},
+  potkw:{ALL:20857,'EL ORO':19250,GUAYAS:893,AZUAY:694,LOJA:18}
+};
+
+const TC={Sodio:'#ba7517',LED:'#1d9e75',Proyector:'#7f77dd',Semaforizacion:'#d85a30',Mercurio:'#e24b4a','Metal Halide':'#639922',Camara:'#d4537e'};
+const cc={};
+const fl={prov:'ALL',tech:'ALL',prop:'ALL'};
+
+function fm(n){return Math.round(n).toLocaleString('es-EC')}
+
+function sf(k,v,btn){
+  btn.closest('.fg').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  fl[k]=v;
+  upd();
+}
+
+function mkleg(id,labels,cols,vals){
+  const tot=vals.reduce((a,b)=>a+b,0);
+  document.getElementById(id).innerHTML=labels.map((l,i)=>
+    `<span class="li"><span class="ld" style="background:${cols[i]}"></span>${l}&nbsp;<strong style="color:#1a1a1a">${tot>0?((vals[i]/tot)*100).toFixed(1):0}%</strong></span>`
+  ).join('');
+}
+
+function dc(id){if(cc[id]){cc[id].destroy();delete cc[id];}}
+
+function baseOpts(){
+  return{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        backgroundColor:'#fff',
+        borderColor:'rgba(0,0,0,0.12)',
+        borderWidth:1,
+        titleColor:'#888780',
+        bodyColor:'#1a1a1a',
+        padding:10,
+        cornerRadius:8,
+        titleFont:{family:'Inter',size:10},
+        bodyFont:{family:'Inter',size:11,weight:'600'}
+      }
+    }
+  };
+}
+
+function upd(){
+  const p=fl.prov,t=fl.tech;
+  const td=D.tech[p]||D.tech.ALL;
+  const tTot=Object.values(td).reduce((a,b)=>a+b,0);
+  let sc=1;
+  if(t!=='ALL'&&td[t]!==undefined) sc=td[t]/tTot;
+  const tot=Math.round(D.tot[p]*sc);
+  const pkw=Math.round(D.potkw[p]*sc);
+  const cons=(pkw*11.6*30/1e6).toFixed(2);
+  const led=td.LED||0;
+  const pLed=tTot>0?((led/tTot)*100).toFixed(1):0;
+
+  document.getElementById('kv-total').textContent=fm(tot);
+  document.getElementById('ks-total').textContent=p==='ALL'?'4 provincias activas':p.charAt(0)+p.slice(1).toLowerCase();
+  document.getElementById('kv-pot').textContent=fm(pkw)+' kW';
+  document.getElementById('kv-cons').textContent=cons+'M kWh';
+  document.getElementById('kv-led').textContent=pLed+'%';
+  document.getElementById('ks-led').textContent=fm(led)+' unidades modernas';
+
+  updTech(p,t);
+  updCant(p,t);
+}
+
+function updTech(p,t){
+  dc('techC');
+  const td=D.tech[p]||D.tech.ALL;
+  let labels,vals,cols;
+  if(t!=='ALL'&&td[t]!==undefined){
+    const sel=td[t],tot=Object.values(td).reduce((a,b)=>a+b,0);
+    labels=[t,'Otros'];vals=[sel,tot-sel];cols=[TC[t]||'#888','#d3d1c7'];
+  }else{
+    labels=Object.keys(td);vals=Object.values(td);cols=labels.map(l=>TC[l]||'#888');
+  }
+  const o=baseOpts();o.cutout='66%';
+  o.plugins.tooltip.callbacks={label:ctx=>` ${ctx.label}: ${fm(ctx.raw)} ud.`};
+  cc.techC=new Chart(document.getElementById('techC'),{
+    type:'doughnut',
+    data:{labels,datasets:[{data:vals,backgroundColor:cols,borderWidth:2,borderColor:'#fff',hoverOffset:5}]},
+    options:o
+  });
+  mkleg('tleg',labels,cols,vals);
+}
+
+function updCant(p,t){
+  dc('cantC');
+  const ck=(p in D.cant)?p:'ALL';
+  const rows=D.cant[ck].slice(0,10);
+  const td=D.tech[p]||D.tech.ALL;
+  const tTot=Object.values(td).reduce((a,b)=>a+b,0);
+  const sc=(t!=='ALL'&&td[t]!==undefined)?td[t]/tTot:1;
+  const labels=rows.map(r=>r[0]);
+  const vals=rows.map(r=>Math.round(r[1]*sc));
+  const wrap=document.getElementById('cwrap');
+  if(wrap) wrap.style.height=Math.max(200,labels.length*28+50)+'px';
+  const o=baseOpts();o.indexAxis='y';
+  o.scales={
+    x:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{callback:v=>(v/1000).toFixed(0)+'k',font:{family:'Inter',size:9},color:'#888780'}},
+    y:{grid:{display:false},ticks:{font:{family:'Inter',size:10},color:'#1a1a1a'}}
+  };
+  o.plugins.tooltip.callbacks={label:ctx=>` ${fm(ctx.raw)} luminarias`};
+  cc.cantC=new Chart(document.getElementById('cantC'),{
+    type:'bar',
+    data:{labels,datasets:[{data:vals,backgroundColor:vals.map((_,i)=>`rgba(29,158,117,${1-i*.07})`),borderWidth:0,borderRadius:4}]},
+    options:o
+  });
+}
+
+function initStatic(){
+  /* ── Potencia ── */
+  const potL=['150W','250W','400W','100W','240W','90W','70W','180W','50W','>400W'];
+  const potV=[64939,20478,6990,5173,3898,1917,1647,1413,877,626];
+  const potColors=['#ba7517','#7f77dd','#1d9e75','#d85a30','#639922','#d4537e','#e24b4a','#185fa5','#ba7517','#b4b2a9'];
+  const o1=baseOpts();
+  o1.scales={
+    x:{grid:{display:false},ticks:{font:{family:'Inter',size:9},color:'#888780'}},
+    y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{callback:v=>(v/1000).toFixed(0)+'k',font:{family:'Inter',size:9},color:'#888780'}}
+  };
+  o1.plugins.tooltip.callbacks={label:ctx=>` ${fm(ctx.raw)} luminarias`};
+  cc.potC=new Chart(document.getElementById('potC'),{
+    type:'bar',
+    data:{labels:potL,datasets:[{data:potV,backgroundColor:potColors,borderWidth:0,borderRadius:{topLeft:4,topRight:4}}]},
+    options:o1
+  });
+
+  /* ── Clasificacion ── */
+  const claL=['AP General','Ornamental','Intervenido','Semaforización','Seg. Seguridad','Esc. Deportivo'];
+  const claV=[98706,8456,3686,1192,369,332];
+  const claC=['#1d9e75','#7f77dd','#d85a30','#ba7517','#639922','#d4537e'];
+  const o2=baseOpts();o2.cutout='62%';
+  o2.plugins.tooltip.callbacks={label:ctx=>` ${ctx.label}: ${fm(ctx.raw)} ud.`};
+  cc.claC=new Chart(document.getElementById('claC'),{
+    type:'doughnut',
+    data:{labels:claL,datasets:[{data:claV,backgroundColor:claC,borderWidth:2,borderColor:'#fff'}]},
+    options:o2
+  });
+  mkleg('cleg',claL,claC,claV);
+
+  /* ── Subestaciones ── */
+  const subL=['La Peaña','Portovelo','Santa Rosa','Los Pinos','Arenillas','Huaquillas','El Cambio','Machala','La Primavera','Balao'];
+  const subV=[10957,10693,10259,9384,8729,7422,7324,6987,5947,5434];
+  const o3=baseOpts();o3.indexAxis='y';
+  o3.scales={
+    x:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{callback:v=>(v/1000).toFixed(0)+'k',font:{family:'Inter',size:9},color:'#888780'}},
+    y:{grid:{display:false},ticks:{font:{family:'Inter',size:10},color:'#1a1a1a'}}
+  };
+  o3.plugins.tooltip.callbacks={label:ctx=>` ${fm(ctx.raw)} luminarias`};
+  cc.subC=new Chart(document.getElementById('subC'),{
+    type:'bar',
+    data:{labels:subL,datasets:[{data:subV,backgroundColor:subV.map((_,i)=>`rgba(127,119,221,${1-i*.07})`),borderWidth:0,borderRadius:4}]},
+    options:o3
+  });
+
+  /* ── Propiedad ── */
+  const prpL=['Distribuidora','Municipal','Particular'];
+  const prpV=[100975,11645,121];
+  const prpC=['#1d9e75','#7f77dd','#d85a30'];
+  const o4=baseOpts();o4.cutout='65%';
+  o4.plugins.tooltip.callbacks={label:ctx=>` ${ctx.label}: ${fm(ctx.raw)} ud.`};
+  cc.prpC=new Chart(document.getElementById('prpC'),{
+    type:'doughnut',
+    data:{labels:prpL,datasets:[{data:prpV,backgroundColor:prpC,borderWidth:2,borderColor:'#fff'}]},
+    options:o4
+  });
+
+  /* ── Provincias ── */
+  const prvL=['El Oro','Guayas','Azuay','Loja'];
+  const prvV=[104056,4834,3756,95];
+  const prvC=['#1d9e75','#7f77dd','#d85a30','#ba7517'];
+  const o5=baseOpts();
+  o5.scales={
+    x:{grid:{display:false},ticks:{font:{family:'Inter',size:10},color:'#5f5e5a'}},
+    y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{callback:v=>(v/1000).toFixed(0)+'k',font:{family:'Inter',size:9},color:'#888780'}}
+  };
+  o5.plugins.tooltip.callbacks={label:ctx=>` ${fm(ctx.raw)} luminarias`};
+  cc.prvC=new Chart(document.getElementById('prvC'),{
+    type:'bar',
+    data:{labels:prvL,datasets:[{data:prvV,backgroundColor:prvC,borderWidth:0,borderRadius:{topLeft:5,topRight:5}}]},
+    options:o5
+  });
+
+  /* ── Medicion ── */
+  const medL=['Sin medición','Bajo medición'];
+  const medV=[108612,4129];
+  const medC=['#d3d1c7','#1d9e75'];
+  const o6=baseOpts();o6.cutout='68%';
+  o6.plugins.tooltip.callbacks={label:ctx=>` ${ctx.label}: ${fm(ctx.raw)} ud.`};
+  cc.medC=new Chart(document.getElementById('medC'),{
+    type:'doughnut',
+    data:{labels:medL,datasets:[{data:medV,backgroundColor:medC,borderWidth:2,borderColor:'#fff'}]},
+    options:o6
+  });
+  mkleg('mleg',medL,medC,medV);
+
+  /* ── Nivel ── */
+  const nivL=['Simple nivel','Doble nivel'];
+  const nivV=[104065,7115];
+  const nivC=['#d3d1c7','#7f77dd'];
+  const o7=baseOpts();o7.cutout='68%';
+  o7.plugins.tooltip.callbacks={label:ctx=>` ${ctx.label}: ${fm(ctx.raw)} ud.`};
+  cc.nivC=new Chart(document.getElementById('nivC'),{
+    type:'doughnut',
+    data:{labels:nivL,datasets:[{data:nivV,backgroundColor:nivC,borderWidth:2,borderColor:'#fff'}]},
+    options:o7
+  });
+  mkleg('nleg',nivL,nivC,nivV);
+
+  /* ── Horas ── */
+  const hrL=['12 h / noche — simple nivel','6 h / noche — doble nivel'];
+  const hrV=[105626,7115];
+  const hrC=['#1d9e75','#7f77dd'];
+  const o8=baseOpts();o8.cutout='68%';
+  o8.plugins.tooltip.callbacks={label:ctx=>` ${ctx.label}: ${fm(ctx.raw)} ud.`};
+  cc.hrC=new Chart(document.getElementById('hrC'),{
+    type:'doughnut',
+    data:{labels:hrL,datasets:[{data:hrV,backgroundColor:hrC,borderWidth:2,borderColor:'#fff'}]},
+    options:o8
+  });
+  mkleg('hrleg',hrL,hrC,hrV);
+}
+
+/* ─── INIT ─── */
+initStatic();
+updTech('ALL','ALL');
+updCant('ALL','ALL');
+</script>
+</body>
+</html>

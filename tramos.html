@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIG-EOR | Tramos 69 kV</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/tramos.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div style="display:flex;align-items:center;">
+      <a href="index.html" class="header-logo">SIG<span>-EOR</span></a>
+      <div class="header-divider"></div>
+      <div class="header-page">Tramos Subtransmisión 69 kV</div>
+    </div>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="subestaciones.html">Subestaciones</a>
+      <a href="tramos.html" class="active">Tramos</a>
+      <a href="alimentadores.html">Alimentadores</a>
+    </nav>
+  </header>
+
+  <div class="main-container">
+
+    <!-- PANEL TABLA -->
+    <div class="table-panel">
+
+      <!-- Resumen estadístico -->
+      <div class="panel-summary">
+        <div class="summary-item">
+          <span class="summary-value">26</span>
+          <span class="summary-label">Tramos</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-item">
+          <span class="summary-value">349.58</span>
+          <span class="summary-label">km totales</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-item">
+          <span class="summary-value">69 kV</span>
+          <span class="summary-label">Voltaje</span>
+        </div>
+      </div>
+
+      <!-- Buscador -->
+      <div class="table-search">
+        <input type="text" id="searchInput"
+               placeholder="🔍  Buscar tramo..."
+               oninput="filterTable()">
+      </div>
+
+      <!-- Cabecera columnas -->
+      <div class="table-header">
+        <table>
+          <tr>
+            <th style="width:28px;">#</th>
+            <th>Nombre del Tramo</th>
+            <th style="width:90px;">Longitud</th>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Filas -->
+      <div class="table-body">
+        <table>
+          <tbody id="tableBody">
+  <tr onclick="highlightTramo('ARENILLAS - HUAQUILLAS')" data-nombre="ARENILLAS - HUAQUILLAS"><td>1</td><td class="tramo-nombre">ARENILLAS - HUAQUILLAS</td><td class="km-cell">18.290 km</td></tr>
+  <tr onclick="highlightTramo('BALAO - NARANJAL')" data-nombre="BALAO - NARANJAL"><td>2</td><td class="tramo-nombre">BALAO - NARANJAL</td><td class="km-cell">31.391 km</td></tr>
+  <tr onclick="highlightTramo('BARBONES - PAGUA')" data-nombre="BARBONES - PAGUA"><td>3</td><td class="tramo-nombre">BARBONES - PAGUA</td><td class="km-cell">26.886 km</td></tr>
+  <tr onclick="highlightTramo('BARBONES - PETROECUADOR')" data-nombre="BARBONES - PETROECUADOR"><td>4</td><td class="tramo-nombre">BARBONES - PETROECUADOR</td><td class="km-cell">11.518 km</td></tr>
+  <tr onclick="highlightTramo('EL CAMBIO - EL BOSQUE')" data-nombre="EL CAMBIO - EL BOSQUE"><td>5</td><td class="tramo-nombre">EL CAMBIO - EL BOSQUE</td><td class="km-cell">6.158 km</td></tr>
+  <tr onclick="highlightTramo('EL CAMBIO - MACHALA')" data-nombre="EL CAMBIO - MACHALA"><td>6</td><td class="tramo-nombre">EL CAMBIO - MACHALA</td><td class="km-cell">4.718 km</td></tr>
+  <tr onclick="highlightTramo('GOLDEN VALLEY 1 - GOLDEN VALLEY 2')" data-nombre="GOLDEN VALLEY 1 - GOLDEN VALLEY 2"><td>7</td><td class="tramo-nombre">GOLDEN VALLEY 1 - GOLDEN VALLEY 2</td><td class="km-cell">1.508 km</td></tr>
+  <tr onclick="highlightTramo('LA AVANZADA 2 - ARENILLAS')" data-nombre="LA AVANZADA 2 - ARENILLAS"><td>8</td><td class="tramo-nombre">LA AVANZADA 2 - ARENILLAS</td><td class="km-cell">12.215 km</td></tr>
+  <tr onclick="highlightTramo('LA AVANZADA 2 - SANTA ROSA')" data-nombre="LA AVANZADA 2 - SANTA ROSA"><td>9</td><td class="tramo-nombre">LA AVANZADA 2 - SANTA ROSA</td><td class="km-cell">8.172 km</td></tr>
+  <tr onclick="highlightTramo('LA AVANZADA 2 - SARACAY')" data-nombre="LA AVANZADA 2 - SARACAY"><td>10</td><td class="tramo-nombre">LA AVANZADA 2 - SARACAY</td><td class="km-cell">20.095 km</td></tr>
+  <tr onclick="highlightTramo('LA IBERIA - BARBONES')" data-nombre="LA IBERIA - BARBONES"><td>11</td><td class="tramo-nombre">LA IBERIA - BARBONES</td><td class="km-cell">7.300 km</td></tr>
+  <tr onclick="highlightTramo('LA IBERIA - LA PRIMAVERA')" data-nombre="LA IBERIA - LA PRIMAVERA"><td>12</td><td class="tramo-nombre">LA IBERIA - LA PRIMAVERA</td><td class="km-cell">11.602 km</td></tr>
+  <tr onclick="highlightTramo('LA PEANA - EL CAMBIO')" data-nombre="LA PEANA - EL CAMBIO"><td>13</td><td class="tramo-nombre">LA PEANA - EL CAMBIO</td><td class="km-cell">4.402 km</td></tr>
+  <tr onclick="highlightTramo('LA PEANA - LA AVANZADA')" data-nombre="LA PEANA - LA AVANZADA"><td>14</td><td class="tramo-nombre">LA PEANA - LA AVANZADA</td><td class="km-cell">62.281 km</td></tr>
+  <tr onclick="highlightTramo('LA PEANA - LA IBERIA')" data-nombre="LA PEANA - LA IBERIA"><td>15</td><td class="tramo-nombre">LA PEANA - LA IBERIA</td><td class="km-cell">4.214 km</td></tr>
+  <tr onclick="highlightTramo('LA PEANA - MACHALA')" data-nombre="LA PEANA - MACHALA"><td>16</td><td class="tramo-nombre">LA PEANA - MACHALA</td><td class="km-cell">15.981 km</td></tr>
+  <tr onclick="highlightTramo('LA PEANA - POROTILLO')" data-nombre="LA PEANA - POROTILLO"><td>17</td><td class="tramo-nombre">LA PEANA - POROTILLO</td><td class="km-cell">30.728 km</td></tr>
+  <tr onclick="highlightTramo('LOS PINOS - PORTUARIA')" data-nombre="LOS PINOS - PORTUARIA"><td>18</td><td class="tramo-nombre">LOS PINOS - PORTUARIA</td><td class="km-cell">2.800 km</td></tr>
+  <tr onclick="highlightTramo('MACHALA - LA GRAN PIAZZA')" data-nombre="MACHALA - LA GRAN PIAZZA"><td>19</td><td class="tramo-nombre">MACHALA - LA GRAN PIAZZA</td><td class="km-cell">0.933 km</td></tr>
+  <tr onclick="highlightTramo('MACHALA - LOS PINOS')" data-nombre="MACHALA - LOS PINOS"><td>20</td><td class="tramo-nombre">MACHALA - LOS PINOS</td><td class="km-cell">7.512 km</td></tr>
+  <tr onclick="highlightTramo('MACHALA - MACHALA CENTRO')" data-nombre="MACHALA - MACHALA CENTRO"><td>21</td><td class="tramo-nombre">MACHALA - MACHALA CENTRO</td><td class="km-cell">2.280 km</td></tr>
+  <tr onclick="highlightTramo('MACHALA - SHOPPING')" data-nombre="MACHALA - SHOPPING"><td>22</td><td class="tramo-nombre">MACHALA - SHOPPING</td><td class="km-cell">1.196 km</td></tr>
+  <tr onclick="highlightTramo('PAGUA - BALAO')" data-nombre="PAGUA - BALAO"><td>23</td><td class="tramo-nombre">PAGUA - BALAO</td><td class="km-cell">22.590 km</td></tr>
+  <tr onclick="highlightTramo('PORTOVELO - GOLDEN VALLEY 1')" data-nombre="PORTOVELO - GOLDEN VALLEY 1"><td>24</td><td class="tramo-nombre">PORTOVELO - GOLDEN VALLEY 1</td><td class="km-cell">1.175 km</td></tr>
+  <tr onclick="highlightTramo('PRIMAVERA - LOS PINOS')" data-nombre="PRIMAVERA - LOS PINOS"><td>25</td><td class="tramo-nombre">PRIMAVERA - LOS PINOS</td><td class="km-cell">5.847 km</td></tr>
+  <tr onclick="highlightTramo('SARACAY - PORTOVELO')" data-nombre="SARACAY - PORTOVELO"><td>26</td><td class="tramo-nombre">SARACAY - PORTOVELO</td><td class="km-cell">27.792 km</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /.table-panel -->
+
+    <!-- MAPA -->
+    <div id="map">
+
+      <!-- Leyenda de colores -->
+      <div class="layer-panel">
+
+        <div class="layer-section">
+          <div class="layer-section-title">Mapa base</div>
+          <label class="layer-option">
+            <input type="radio" name="basemap" value="osm" checked
+                   onchange="changeBasemap(this.value)"> OpenStreetMap
+          </label>
+          <label class="layer-option">
+            <input type="radio" name="basemap" value="satellite"
+                   onchange="changeBasemap(this.value)"> Satélite
+          </label>
+          <label class="layer-option">
+            <input type="radio" name="basemap" value="topo"
+                   onchange="changeBasemap(this.value)"> TopoMap
+          </label>
+        </div>
+
+        <div class="layer-section">
+          <div class="layer-section-title">Capas</div>
+          <label class="layer-option">
+            <div class="legend-area" style="background:#4a9e6e;opacity:.6;border:1.5px solid #1a2744;"></div>
+            <input type="checkbox" checked onchange="toggleLayer('area', this.checked)">
+            Área Servicio
+          </label>
+          <label class="layer-option">
+            <div class="legend-line" style="background:#c0392b;"></div>
+            <input type="checkbox" checked onchange="toggleLayer('tramos', this.checked)">
+            Tramos 69 kV
+          </label>
+        </div>
+
+        <div class="layer-section">
+          <div class="layer-section-title">Longitud (km)</div>
+          <div class="layer-option" style="cursor:default;">
+            <div class="legend-line" style="background:#7b241c;"></div>
+            <span>&gt; 50 km</span>
+          </div>
+          <div class="layer-option" style="cursor:default;">
+            <div class="legend-line" style="background:#c0392b;"></div>
+            <span>30 – 50 km</span>
+          </div>
+          <div class="layer-option" style="cursor:default;">
+            <div class="legend-line" style="background:#e67e22;"></div>
+            <span>15 – 30 km</span>
+          </div>
+          <div class="layer-option" style="cursor:default;">
+            <div class="legend-line" style="background:#2980b9;"></div>
+            <span>5 – 15 km</span>
+          </div>
+          <div class="layer-option" style="cursor:default;">
+            <div class="legend-line" style="background:#27ae60;"></div>
+            <span>&lt; 5 km</span>
+          </div>
+        </div>
+
+      </div><!-- /.layer-panel -->
+
+      <!-- Info panel del tramo seleccionado -->
+      <div class="tramo-info" id="tramoInfo">
+        <div class="tramo-info-title" id="tiNombre">—</div>
+        <div class="tramo-info-row">
+          <span>Longitud total</span>
+          <span id="tiKm">—</span>
+        </div>
+        <div class="tramo-info-row">
+          <span>Segmentos</span>
+          <span id="tiSeg">—</span>
+        </div>
+        <div class="tramo-info-row">
+          <span>Voltaje</span>
+          <span id="tiVolt">—</span>
+        </div>
+      </div>
+
+    </div><!-- /#map -->
+
+  </div><!-- /.main-container -->
+
+  <script src="js/tramos.js"></script>
+
+</body>
+</html>

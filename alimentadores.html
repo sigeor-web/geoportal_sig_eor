@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIG-EOR | Alimentadores</title>
+
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/alimentadores.css">
+</head>
+<body>
+
+  <!-- ── HEADER ───────────────────────────────────────────── -->
+  <header>
+    <div style="display:flex;align-items:center;">
+      <a href="index.html" class="header-logo">SIG<span>-EOR</span></a>
+      <div class="header-divider"></div>
+      <div class="header-page">Alimentadores</div>
+    </div>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="subestaciones.html">Subestaciones</a>      
+      <a href="alimentadores.html" class="active">Alimentadores</a>
+    </nav>
+  </header>
+
+  <!-- ── CONTENIDO ────────────────────────────────────────── -->
+  <div class="page-content">
+
+    <!-- Barra superior -->
+    <div class="top-bar">
+      <span class="top-bar-title">Subestaciones con alimentadores</span>
+      <span class="top-bar-count" id="countLabel">Cargando...</span>
+      <input type="text" id="searchInput" placeholder="🔍  Buscar subestación...">
+    </div>
+
+    <!-- Grid de tarjetas -->
+    <div class="cards-wrapper">
+      <div class="cards-grid" id="cardsGrid">
+        <!-- Las tarjetas se generan dinámicamente -->
+      </div>
+    </div>
+
+    <!-- Panel de detalle de alimentadores -->
+    <div class="detail-panel" id="detailPanel">
+      <div class="detail-header">
+        <span class="detail-header-title" id="detailTitle">—</span>
+        <button class="detail-header-close" onclick="closeDetail()" title="Cerrar">✕</button>
+      </div>
+      <div class="detail-table-wrap">
+        <table class="detail-table">
+          <thead>
+            <tr>
+              <th style="width:36px;">#</th>
+              <th>Cód. Subestación</th>
+              <th>Cód. Alimentador</th>
+              <th>Nombre del Alimentador</th>
+              <th>Calibre Conductor</th>
+            </tr>
+          </thead>
+          <tbody id="detailTbody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /.page-content -->
+
+  <script src="js/alimentadores.js"></script>
+  <script>
+    // Actualizar label con totales tras cargar las tarjetas
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new MutationObserver(() => {
+        const n = document.querySelectorAll('.sub-card').length;
+        if (n > 0) {
+          document.getElementById('countLabel').textContent = `${n} subestaciones`;
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.getElementById('cardsGrid'), { childList: true });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIG-EOR | Subestaciones</title>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Estilos propios -->
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/subestaciones.css">
+</head>
+<body>
+
+  <!-- ── HEADER ───────────────────────────────────────────── -->
+  <header>
+    <div style="display:flex;align-items:center;">
+      <a href="index.html" class="header-logo">SIG<span>-EOR</span></a>
+      <div class="header-divider"></div>
+      <div class="header-page">Subestaciones</div>
+    </div>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="tramos.html">Tramos</a>
+      <a href="alimentadores.html">Alimentadores</a>
+      <a href="Unifilar_eor.drawio_actual.html" target="_blank">Diagrama</a>
+    </nav>
+  </header>
+
+  <!-- ── CONTENIDO PRINCIPAL ──────────────────────────────── -->
+  <div class="main-container">
+
+    <!-- Panel izquierdo: tabla -->
+    <div class="table-panel">
+
+      <div class="table-search">
+        <input type="text" id="searchInput"
+               placeholder="🔍  Buscar subestación..."
+               oninput="filterTable()">
+      </div>
+
+      <div class="table-header">
+        <table>
+          <tr>
+            <th style="width:28px;">#</th>
+            <th style="width:68px;">Código</th>
+            <th>Subestación</th>
+            <th style="width:46px;">Lat</th>
+            <th style="width:46px;">Lon</th>
+            <th>Geográficas</th>
+          </tr>
+        </table>
+      </div>
+
+      <div class="table-body">
+        <table>
+          <tbody id="tableBody">
+  <tr style="background:#1a2744;pointer-events:none;"><td colspan="6" style="padding:5px 8px;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.7);text-transform:uppercase;">CNEL</td></tr>
+  <tr onclick="flyTo(-3.292482125582688,-79.867848288795173,'S/E La Peaña','07PN01')" data-lat="-3.292482125582688" data-lon="-79.867848288795173"><td>1</td><td>07PN01</td><td>S/E La Peaña</td><td>-3.29</td><td>-79.87</td><td class="geo-link">-3.292482,-79.867848</td></tr>
+  <tr onclick="flyTo(-3.193392090002557,-79.850974563287991,'S/E Barbones','07BA02')" data-lat="-3.193392090002557" data-lon="-79.850974563287991"><td>2</td><td>07BA02</td><td>S/E Barbones</td><td>-3.19</td><td>-79.85</td><td class="geo-link">-3.193392,-79.850975</td></tr>
+  <tr onclick="flyTo(-3.296441359966981,-79.903199403458558,'S/E El Cambio','07CA03')" data-lat="-3.296441359966981" data-lon="-79.903199403458558"><td>3</td><td>07CA03</td><td>S/E El Cambio</td><td>-3.30</td><td>-79.90</td><td class="geo-link">-3.296441,-79.903199</td></tr>
+  <tr onclick="flyTo(-3.270011984662729,-79.932773693799419,'S/E Machala','07MA04')" data-lat="-3.270011984662729" data-lon="-79.932773693799419"><td>4</td><td>07MA04</td><td>S/E Machala</td><td>-3.27</td><td>-79.93</td><td class="geo-link">-3.270012,-79.932774</td></tr>
+  <tr onclick="flyTo(-3.521069356331790,-79.970859101332749,'S/E La Avanzada','07AV05')" data-lat="-3.521069356331790" data-lon="-79.970859101332749"><td>5</td><td>07AV05</td><td>S/E La Avanzada</td><td>-3.52</td><td>-79.97</td><td class="geo-link">-3.521069,-79.970859</td></tr>
+  <tr onclick="flyTo(-3.254104455098909,-79.979698229633925,'S/E Los Pinos','07PI06')" data-lat="-3.254104455098909" data-lon="-79.979698229633925"><td>6</td><td>07PI06</td><td>S/E Los Pinos</td><td>-3.25</td><td>-79.98</td><td class="geo-link">-3.254104,-79.979698</td></tr>
+  <tr onclick="flyTo(-3.448229668938685,-79.967268413159886,'S/E Santa Rosa','07SR07')" data-lat="-3.448229668938685" data-lon="-79.967268413159886"><td>7</td><td>07SR07</td><td>S/E Santa Rosa</td><td>-3.45</td><td>-79.97</td><td class="geo-link">-3.448230,-79.967268</td></tr>
+  <tr onclick="flyTo(-3.266089535221610,-79.950143212188024,'S/E Machala Centro','07MC08')" data-lat="-3.266089535221610" data-lon="-79.950143212188024"><td>8</td><td>07MC08</td><td>S/E Machala Centro</td><td>-3.27</td><td>-79.95</td><td class="geo-link">-3.266090,-79.950143</td></tr>
+  <tr onclick="flyTo(-3.549442533715621,-80.069642615739639,'S/E Arenillas','07AR09')" data-lat="-3.549442533715621" data-lon="-80.069642615739639"><td>9</td><td>07AR09</td><td>S/E Arenillas</td><td>-3.55</td><td>-80.07</td><td class="geo-link">-3.549443,-80.069643</td></tr>
+  <tr onclick="flyTo(-3.709627967562618,-79.632949173151829,'S/E Portovelo','07PO10')" data-lat="-3.709627967562618" data-lon="-79.632949173151829"><td>10</td><td>07PO10</td><td>S/E Portovelo</td><td>-3.71</td><td>-79.63</td><td class="geo-link">-3.709628,-79.632949</td></tr>
+  <tr onclick="flyTo(-3.490225502945041,-80.208449656786485,'S/E Huaquillas','07HU11')" data-lat="-3.490225502945041" data-lon="-80.208449656786485"><td>11</td><td>07HU11</td><td>S/E Huaquillas</td><td>-3.49</td><td>-80.21</td><td class="geo-link">-3.490226,-80.208450</td></tr>
+  <tr onclick="flyTo(-3.086594619171328,-79.760585261624229,'S/E Pagua','07PA12')" data-lat="-3.086594619171328" data-lon="-79.760585261624229"><td>12</td><td>07PA12</td><td>S/E Pagua</td><td>-3.09</td><td>-79.76</td><td class="geo-link">-3.086595,-79.760585</td></tr>
+  <tr onclick="flyTo(-2.905933990777239,-79.706977770773975,'S/E Balao','07BL13')" data-lat="-2.905933990777239" data-lon="-79.706977770773975"><td>13</td><td>07BL13</td><td>S/E Balao</td><td>-2.91</td><td>-79.71</td><td class="geo-link">-2.905934,-79.706978</td></tr>
+  <tr onclick="flyTo(-3.646685217100996,-79.861238316615569,'S/E Saracay','07SA14')" data-lat="-3.646685217100996" data-lon="-79.861238316615569"><td>14</td><td>07SA14</td><td>S/E Saracay</td><td>-3.65</td><td>-79.86</td><td class="geo-link">-3.646685,-79.861238</td></tr>
+  <tr onclick="flyTo(-3.256272609008067,-79.865300556368936,'S/E La Iberia','07IB15')" data-lat="-3.256272609008067" data-lon="-79.865300556368936"><td>15</td><td>07IB15</td><td>S/E La Iberia</td><td>-3.26</td><td>-79.87</td><td class="geo-link">-3.256273,-79.865301</td></tr>
+  <tr onclick="flyTo(-3.327305855881851,-79.620548259250072,'S/E Porotillo','07PT16')" data-lat="-3.327305855881851" data-lon="-79.620548259250072"><td>16</td><td>07PT16</td><td>S/E Porotillo</td><td>-3.33</td><td>-79.62</td><td class="geo-link">-3.327306,-79.620548</td></tr>
+  <tr onclick="flyTo(-3.241270537237005,-79.949574904406717,'S/E La Primavera','07PR17')" data-lat="-3.241270537237005" data-lon="-79.949574904406717"><td>17</td><td>07PR17</td><td>S/E La Primavera</td><td>-3.24</td><td>-79.95</td><td class="geo-link">-3.241271,-79.949575</td></tr>
+  <tr onclick="flyTo(-3.283521160907354,-79.940432328000838,'S/E El Bosque','07BO18')" data-lat="-3.283521160907354" data-lon="-79.940432328000838"><td>18</td><td>07BO18</td><td>S/E El Bosque</td><td>-3.28</td><td>-79.94</td><td class="geo-link">-3.283521,-79.940432</td></tr>
+  <tr onclick="flyTo(-3.520154217498714,-79.971333826128415,'S/E La Avanzada 2','07AV19')" data-lat="-3.520154217498714" data-lon="-79.971333826128415"><td>19</td><td>07AV19</td><td>S/E La Avanzada 2</td><td>-3.52</td><td>-79.97</td><td class="geo-link">-3.520154,-79.971334</td></tr>
+  <tr style="background:#2c3e50;pointer-events:none;"><td colspan="6" style="padding:5px 8px;font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;color:rgba(255,255,255,.7);text-transform:uppercase;">Particulares</td></tr>
+  <tr onclick="flyTo(-3.288146012570395,-79.906042566279481,'S/E Incarpalm','07P001')" data-lat="-3.288146012570395" data-lon="-79.906042566279481"><td>20</td><td>07P001</td><td>S/E Incarpalm</td><td>-3.29</td><td>-79.91</td><td class="geo-link">-3.288146,-79.906043</td></tr>
+  <tr onclick="flyTo(-3.281415006664308,-79.932078381283546,'S/E Paseo Shopiping','07P002')" data-lat="-3.281415006664308" data-lon="-79.932078381283546"><td>21</td><td>07P002</td><td>S/E Paseo Shopiping</td><td>-3.28</td><td>-79.93</td><td class="geo-link">-3.281415,-79.932078</td></tr>
+  <tr onclick="flyTo(-3.257833763130775,-79.996553188115598,'S/E Autoridad Portuaria','07P003')" data-lat="-3.257833763130775" data-lon="-79.996553188115598"><td>22</td><td>07P003</td><td>S/E Autoridad Portuaria</td><td>-3.26</td><td>-80.00</td><td class="geo-link">-3.257834,-79.996553</td></tr>
+  <tr onclick="flyTo(-3.115313731760158,-79.877152327294070,'S/E Petroecuador','07P004')" data-lat="-3.115313731760158" data-lon="-79.877152327294070"><td>23</td><td>07P004</td><td>S/E Petroecuador</td><td>-3.12</td><td>-79.88</td><td class="geo-link">-3.115314,-79.877152</td></tr>
+  <tr onclick="flyTo(-3.718808350323858,-79.629047773760959,'S/E Golden Valley','07P005')" data-lat="-3.718808350323858" data-lon="-79.629047773760959"><td>24</td><td>07P005</td><td>S/E Golden Valley</td><td>-3.72</td><td>-79.63</td><td class="geo-link">-3.718808,-79.629048</td></tr>
+  <tr onclick="flyTo(-3.709917938352788,-79.619097495270296,'S/E Elipe','07P006')" data-lat="-3.709917938352788" data-lon="-79.619097495270296"><td>25</td><td>07P006</td><td>S/E Elipe</td><td>-3.71</td><td>-79.62</td><td class="geo-link">-3.709918,-79.619097</td></tr>
+  <tr onclick="flyTo(-3.271955340764984,-79.941178439380963,'S/E La Gran Piazza','07P008')" data-lat="-3.271955340764984" data-lon="-79.941178439380963"><td>26</td><td>07P008</td><td>S/E La Gran Piazza</td><td>-3.27</td><td>-79.94</td><td class="geo-link">-3.271955,-79.941178</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /.table-panel -->
+
+    <!-- Panel derecho: mapa -->
+    <div id="map">
+
+      <!-- Control de capas personalizado -->
+      <div class="layer-panel">
+
+        <div class="layer-section">
+          <div class="layer-section-title">Mapa base</div>
+          <label class="layer-option">
+            <input type="radio" name="basemap" value="osm" checked
+                   onchange="changeBasemap(this.value)">
+            OpenStreetMap
+          </label>
+          <label class="layer-option">
+            <input type="radio" name="basemap" value="satellite"
+                   onchange="changeBasemap(this.value)">
+            Satélite
+          </label>
+          <label class="layer-option">
+            <input type="radio" name="basemap" value="topo"
+                   onchange="changeBasemap(this.value)">
+            TopoMap
+          </label>
+        </div>
+
+        <div class="layer-section">
+          <div class="layer-section-title">Capas</div>
+
+          <label class="layer-option">
+            <div class="legend-area"
+                 style="background:#4a9e6e;opacity:.6;border:1.5px solid #1a2744;"></div>
+            <input type="checkbox" checked
+                   onchange="toggleLayer('area', this.checked)">
+            Área Servicio
+          </label>
+
+          <label class="layer-option">
+            <div class="legend-line" style="background:#c0392b;"></div>
+            <input type="checkbox" checked
+                   onchange="toggleLayer('tramos', this.checked)">
+            Tramos 69 kV
+          </label>
+
+          <label class="layer-option">
+            <div class="legend-dot"
+                 style="background:#e67e22;border:2px solid #c0392b;"></div>
+            <input type="checkbox" checked
+                   onchange="toggleLayer('postes', this.checked)">
+            Postes 69 kV
+          </label>
+
+          <label class="layer-option">
+            <div class="legend-dot"
+                 style="background:#2980b9;border:2px solid #1a2744;"></div>
+            <input type="checkbox" checked
+                   onchange="toggleLayer('subestaciones', this.checked)">
+            Subestaciones
+          </label>
+        </div>
+
+      </div><!-- /.layer-panel -->
+
+    </div><!-- /#map -->
+
+  </div><!-- /.main-container -->
+
+  <!-- JavaScript propio -->
+  <script src="js/subestaciones.js"></script>
+
+</body>
+</html>
