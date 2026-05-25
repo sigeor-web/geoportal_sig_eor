@@ -1,0 +1,150 @@
+/* ============================================================
+   SIG-EOR  |  subestaciones.css
+   Estilos específicos de la página de Subestaciones
+   ============================================================ */
+
+/* ── TABLE PANEL ── */
+.table-panel {
+  width: 480px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Search bar */
+.table-search {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--sidebar-bg);
+  flex-shrink: 0;
+}
+.table-search input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 12.5px;
+  color: var(--text);
+  outline: none;
+  font-family: 'Open Sans', sans-serif;
+  transition: border-color .15s;
+}
+.table-search input:focus { border-color: var(--accent); }
+
+/* Column headers */
+.table-header {
+  background: var(--primary);
+  color: var(--white);
+  flex-shrink: 0;
+}
+.table-header table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table-header th {
+  padding: 10px 8px;
+  text-align: left;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  border-right: 1px solid rgba(255,255,255,.1);
+}
+
+/* Scrollable rows */
+.table-body {
+  overflow-y: auto;
+  flex: 1;
+}
+.table-body table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table-body tr {
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background .12s;
+}
+.table-body tr:hover    { background: #eaf3fb; }
+.table-body tr.selected { background: #d4eaf8; }
+
+.table-body td {
+  padding: 8px;
+  font-size: 12px;
+  color: var(--text);
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
+}
+.table-body td:first-child {
+  color: var(--text-light);
+  font-size: 11px;
+  text-align: center;
+  width: 28px;
+}
+.geo-link {
+  color: var(--accent);
+  font-size: 11px;
+}
+
+/* ── LAYER CONTROL PANEL ── */
+.layer-panel {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 800;
+  background: var(--white);
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.15);
+  padding: 12px 14px;
+  min-width: 170px;
+  font-size: 12.5px;
+}
+
+.layer-section { margin-bottom: 10px; }
+.layer-section:last-child { margin-bottom: 0; }
+
+.layer-section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.layer-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 12.5px;
+}
+.layer-option input { cursor: pointer; accent-color: var(--accent); }
+
+/* Legend symbols */
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-line {
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.legend-area {
+  width: 14px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}

@@ -1,0 +1,200 @@
+/* ============================================================
+   SIG-EOR  |  alimentadores.css
+   ============================================================ */
+
+body {
+  overflow: auto;
+}
+
+.page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  background: var(--sidebar-bg);
+}
+
+/* ── BARRA SUPERIOR ── */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.top-bar-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: .5px;
+  white-space: nowrap;
+}
+
+.top-bar-count {
+  font-size: 12px;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.top-bar input {
+  flex: 1;
+  max-width: 340px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 12.5px;
+  font-family: 'Open Sans', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s;
+}
+.top-bar input:focus { border-color: var(--accent); }
+
+/* ── GRID DE TARJETAS ── */
+.cards-wrapper {
+  padding: 20px 24px;
+  flex-shrink: 0;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.sub-card {
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 14px 14px;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s, transform .12s;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sub-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 3px 12px rgba(41,128,185,.15);
+  transform: translateY(-2px);
+}
+.sub-card.active {
+  border-color: var(--accent);
+  background: #eaf3fb;
+  box-shadow: 0 3px 14px rgba(41,128,185,.25);
+}
+
+.card-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+.card-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.25;
+}
+.card-code {
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: .4px;
+}
+.card-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+/* ── PANEL DE DETALLE ── */
+.detail-panel {
+  margin: 0 24px 28px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  display: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+.detail-panel.visible { display: block; }
+
+.detail-header {
+  background: var(--primary);
+  color: var(--white);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.detail-header-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+.detail-header-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.7);
+  font-size: 18px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+  transition: color .15s;
+}
+.detail-header-close:hover { color: #fff; }
+
+.detail-table-wrap {
+  overflow-x: auto;
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.detail-table thead th {
+  background: #f0f4f9;
+  color: var(--primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+.detail-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.detail-table tbody tr:last-child { border-bottom: none; }
+.detail-table tbody tr:hover { background: #f5f9ff; }
+.detail-table tbody td {
+  padding: 8px 14px;
+  font-size: 12.5px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.detail-table .td-code {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: .3px;
+}
+.detail-table .td-num {
+  color: var(--text-light);
+  font-size: 11.5px;
+  text-align: center;
+  width: 36px;
+}

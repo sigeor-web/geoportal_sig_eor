@@ -1,0 +1,138 @@
+/* ============================================================
+   SIG-EOR  |  shared.css
+   Variables y estilos comunes a todas las páginas
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap');
+
+:root {
+  --primary:      #1a2744;
+  --accent:       #2980b9;
+  --accent-light: #4db8ff;
+  --green:        #27ae60;
+  --red:          #c0392b;
+  --orange:       #e67e22;
+  --sidebar-bg:   #f5f7fa;
+  --border:       #dce3ef;
+  --text:         #2c3e50;
+  --text-light:   #7f8c9a;
+  --white:        #ffffff;
+  --header-h:     52px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--text);
+}
+
+/* ── HEADER ── */
+header {
+  height: var(--header-h);
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  flex-shrink: 0;
+}
+
+.header-logo {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 2px;
+  text-decoration: none;
+}
+.header-logo span { color: var(--accent-light); }
+
+.header-page {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent-light);
+  letter-spacing: 1px;
+}
+
+.header-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255,255,255,.2);
+  margin: 0 16px;
+}
+
+nav a {
+  color: rgba(255,255,255,.8);
+  text-decoration: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  margin-left: 28px;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+nav a:hover,
+nav a.active { color: var(--accent-light); }
+
+/* ── LAYOUT ── */
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+#map {
+  flex: 1;
+  position: relative;
+}
+
+/* ── LEAFLET OVERRIDES ── */
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15) !important;
+}
+.leaflet-control-zoom a {
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+}
+.leaflet-control-attribution { font-size: 10px; }
+
+.leaflet-popup-content-wrapper {
+  border-radius: 4px;
+  box-shadow: 0 3px 14px rgba(0,0,0,.2);
+}
+
+/* ── POPUP ── */
+.custom-popup h4 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--accent);
+}
+.custom-popup p {
+  font-size: 12px;
+  color: var(--text);
+  margin: 3px 0;
+}
+.custom-popup .badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 4px;
+  font-weight: 600;
+}

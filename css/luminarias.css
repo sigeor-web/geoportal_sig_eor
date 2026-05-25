@@ -1,0 +1,239 @@
+/* ============================================================
+   SIG-EOR  |  luminarias.css
+   ============================================================ */
+
+/* ── Page layout ─────────────────────────────────────────── */
+.page-content {
+  padding: 20px 24px;
+  box-sizing: border-box;
+}
+
+/* ── KPI Grid ─────────────────────────────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.kpi-card {
+  background: #1e2d50;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: transform .15s, box-shadow .15s;
+}
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.35);
+}
+.kpi-icon  { font-size: 22px; margin-bottom: 4px; }
+.kpi-value {
+  font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #4db8ff;
+  line-height: 1;
+}
+.kpi-label {
+  font-size: 11px;
+  color: rgba(255,255,255,.55);
+  text-transform: uppercase;
+  letter-spacing: .6px;
+}
+
+/* ── Section titles ──────────────────────────────────────── */
+.section-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+  margin: 0 0 12px;
+}
+
+/* ── Charts (left) + Map (right) row ─────────────────────── */
+.left-map-row {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 18px;
+  margin-bottom: 26px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .left-map-row { grid-template-columns: 1fr; }
+}
+
+/* Left column: two stacked chart cards */
+.charts-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ── Chart cards ─────────────────────────────────────────── */
+.chart-card {
+  background: #1e2d50;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  padding: 16px 18px 14px;
+}
+
+.full-chart-card {
+  background: #1e2d50;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  padding: 16px 18px 14px;
+  margin-bottom: 18px;
+}
+
+.chart-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 10px;
+}
+
+.chart-wrap       { position: relative; }
+.chart-wrap.h240  { height: 240px; }
+.chart-wrap.h300  { height: 300px; }
+
+/* ── Map card ────────────────────────────────────────────── */
+.map-card {
+  background: #1e2d50;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  /* NO overflow:hidden — Leaflet tiles need to paint outside bounds */
+}
+
+.map-card-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  padding: 14px 16px 8px;
+}
+
+/* Fixed pixel height so Leaflet always has a known container size */
+#lumMap {
+  height: 540px;
+  width: 100%;
+  display: block;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Leaflet popup dark theme */
+.leaflet-popup-content-wrapper {
+  background: #1a2744;
+  color: #e8eaf6;
+  border-radius: 8px;
+  border: 1px solid rgba(77,184,255,.3);
+  box-shadow: 0 4px 16px rgba(0,0,0,.5);
+}
+.leaflet-popup-tip { background: #1a2744; }
+.leaflet-popup-content { font-size: 13px; line-height: 1.5; }
+
+/* ── Table cards ─────────────────────────────────────────── */
+.table-card {
+  background: #1e2d50;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.table-card.mb18 { margin-bottom: 18px; }
+
+.table-card-header {
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tcard-label {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+}
+
+.table-search-input {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 6px;
+  padding: 5px 10px;
+  color: #e8eaf6;
+  font-size: 12px;
+  outline: none;
+  flex: 1;
+  min-width: 140px;
+}
+.table-search-input::placeholder { color: rgba(255,255,255,.35); }
+.table-search-input:focus { border-color: #4db8ff; }
+
+.table-scroll {
+  overflow-y: auto;
+}
+.table-scroll.h280 { height: 280px; }
+.table-scroll.h380 { height: 380px; }
+
+.table-scroll::-webkit-scrollbar { width: 5px; }
+.table-scroll::-webkit-scrollbar-track { background: transparent; }
+.table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.14);
+  border-radius: 3px;
+}
+
+.alim-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.alim-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #162040;
+  color: rgba(255,255,255,.6);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.alim-table tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  transition: background .12s;
+}
+.alim-table tbody tr:hover { background: rgba(77,184,255,.07); }
+.alim-table td {
+  padding: 7px 12px;
+  color: #c8d6e5;
+}
+.alim-table td.num {
+  color: rgba(255,255,255,.3);
+  text-align: right;
+  width: 36px;
+}
+.alim-table td.cnt {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #4db8ff;
+  font-weight: 600;
+}
