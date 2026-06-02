@@ -11,6 +11,23 @@ const CONDUCTORES = {
   COO0235: 'ACAR #600 MCM'
 };
 
+// ── Mapeo de SUBTIPO de poste ────────────────────────────────
+const SUBTIPO_POSTE = {
+  1: 'Tangente',
+  2: 'Angular Leve',
+  3: 'Angular Fuerte',
+  4: 'Muerto / Anclaje',
+  5: 'Terminal',
+  6: 'Retención'
+};
+
+// ── Mapeo de TIPOCIMIENTO ────────────────────────────────────
+const TIPO_CIMIENTO = {
+  DT: 'Directo en Tierra',
+  CH: 'Cimentación de Hormigón',
+  FH: 'Fundición de Hormigón'
+};
+
 // ── Icono personalizado para subestaciones ───────────────────
 const subIcon = L.divIcon({
   html: `<div style="
@@ -58,6 +75,20 @@ currentBase.addTo(map);
 let areaLayer, tramoLayer, postesLayer, subestacionLayer;
 const subMarkers = {};
 
+// ── Helpers ──────────────────────────────────────────────────
+function fmtFecha(iso) {
+  if (!iso) return '-';
+  return iso.split('T')[0];
+}
+
+function badgeHtml(texto, color) {
+  return `<span style="
+    display:inline-block;padding:1px 6px;margin-left:4px;
+    background:${color};color:#fff;border-radius:3px;
+    font-size:10px;font-weight:700;vertical-align:middle;
+  ">${texto}</span>`;
+}
+
 // ── Carga paralela de todos los GeoJSON ──────────────────────
 Promise.all([
   fetch('data/AreaServicio.geojson').then(r => r.json()),
@@ -98,17 +129,48 @@ Promise.all([
     }
   }).addTo(map);
 
-  // 3. Postes 69 kV  (círculos pequeños para buen rendimiento)
+  // 3. Postes 69 kV
   postesLayer = L.geoJSON(postesData, {
     pointToLayer(feature, latlng) {
       return L.circleMarker(latlng, {
-        radius:      3,
+        radius:      4,
         fillColor:   '#e67e22',
         color:       '#c0392b',
-        weight:      1,
+        weight:      1.2,
         opacity:     1,
-        fillOpacity: 0.85
+        fillOpacity: 0.9
       });
+    },
+    onEachFeature(feature, layer) {
+      const p = feature.properties;
+
+      const subtipo    = SUBTIPO_POSTE[p.SUBTIPO] || p.SUBTIPO || '-';
+      const estructura = p.ESTRUCTURAENPOSTE || '-';
+      const codElem    = p.CODIGOELEMENTO    || '-';
+      const obs        = p.OBSERVACIONES     || '-';
+
+      layer.bindPopup(`
+        <div class="custom-popup">
+          <h4>🔩 Poste 69 kV ${badgeHtml('69 kV', '#c0392b')}</h4>
+          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <tr>
+              <td style="padding:3px 6px 3px 0;color:#aaa;white-space:nowrap;">Código elemento</td>
+              <td style="padding:3px 0;font-weight:600;">${codElem}</td>
+            </tr>
+            <tr>
+              <td style="padding:3px 6px 3px 0;color:#aaa;white-space:nowrap;">Estructura en poste</td>
+              <td style="padding:3px 0;font-weight:600;">${estructura}</td>
+            </tr>
+            <tr>
+              <td style="padding:3px 6px 3px 0;color:#aaa;white-space:nowrap;">Tipo de poste</td>
+              <td style="padding:3px 0;">${subtipo}</td>
+            </tr>
+            <tr>
+              <td style="padding:3px 6px 3px 0;color:#aaa;white-space:nowrap;">Observaciones</td>
+              <td style="padding:3px 0;">${obs}</td>
+            </tr>
+          </table>
+        </div>`, { maxWidth: 260 });
     }
   }).addTo(map);
 
@@ -161,7 +223,6 @@ function flyTo(lat, lon, name, codigo) {
   if (subMarkers[codigo]) {
     setTimeout(() => subMarkers[codigo].openPopup(), 1300);
   }
-  // Resaltar fila
   document.querySelectorAll('#tableBody tr').forEach(row => {
     row.classList.remove('selected');
     if (Math.abs(parseFloat(row.dataset.lat) - lat) < 0.0001) {
