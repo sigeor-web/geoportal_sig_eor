@@ -158,8 +158,15 @@
 
   </div><!-- /.main-container -->
 
-  <!-- Leaflet easyPrint -->
-  <script src="https://unpkg.com/leaflet-easyprint@2.1.9/dist/bundle.min.js"></script>
+  <!-- Estilos de impresión -->
+  <style>
+    @media print {
+      body { margin: 0; }
+      .sidebar, .search-container, .layer-panel { display: none !important; }
+      #map { width: 100vw !important; height: 100vh !important; position: fixed !important; top:0; left:0; }
+      .leaflet-control-zoom, .leaflet-control-attribution { display: none !important; }
+    }
+  </style>
 
   <!-- JavaScript propio -->
   <script src="js/subestaciones.js"></script>
