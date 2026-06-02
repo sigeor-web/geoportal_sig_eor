@@ -142,7 +142,9 @@ Promise.all([
       });
     },
     onEachFeature(feature, layer) {
-      const p = feature.properties;
+      const p   = feature.properties;
+      const lng = feature.geometry.coordinates[0].toFixed(6);
+      const lat = feature.geometry.coordinates[1].toFixed(6);
 
       const subtipo    = SUBTIPO_POSTE[p.SUBTIPO] || p.SUBTIPO || '-';
       const estructura = p.ESTRUCTURAENPOSTE || '-';
@@ -168,6 +170,14 @@ Promise.all([
             <tr>
               <td style="padding:3px 6px 3px 0;color:#aaa;white-space:nowrap;">Observaciones</td>
               <td style="padding:3px 0;">${obs}</td>
+            </tr>
+            <tr>
+              <td style="padding:3px 6px 3px 0;color:#aaa;white-space:nowrap;">Latitud</td>
+              <td style="padding:3px 0;font-family:monospace;">${lat}</td>
+            </tr>
+            <tr>
+              <td style="padding:3px 6px 3px 0;color:#aaa;white-space:nowrap;">Longitud</td>
+              <td style="padding:3px 0;font-family:monospace;">${lng}</td>
             </tr>
           </table>
         </div>`, { maxWidth: 260 });
@@ -198,6 +208,16 @@ Promise.all([
   }).addTo(map);
 
   map.fitBounds(areaLayer.getBounds(), { padding: [30, 30] });
+
+  // ── Control de impresión ──────────────────────────────────
+  L.easyPrint({
+    title:        'Imprimir mapa',
+    position:     'topleft',
+    sizeModes:    ['Current', 'A4Landscape', 'A4Portrait'],
+    filename:     'SIG-EOR_Subestaciones',
+    exportOnly:   false,
+    hideControlContainer: true
+  }).addTo(map);
 })
 .catch(err => console.error('Error cargando GeoJSON:', err));
 
