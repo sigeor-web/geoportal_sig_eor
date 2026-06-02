@@ -209,15 +209,20 @@ Promise.all([
 
   map.fitBounds(areaLayer.getBounds(), { padding: [30, 30] });
 
-  // ── Control de impresión ──────────────────────────────────
-  L.easyPrint({
-    title:        'Imprimir mapa',
-    position:     'topleft',
-    sizeModes:    ['Current', 'A4Landscape', 'A4Portrait'],
-    filename:     'SIG-EOR_Subestaciones',
-    exportOnly:   false,
-    hideControlContainer: true
-  }).addTo(map);
+  // ── Botón de impresión nativo ─────────────────────────────
+  const PrintControl = L.Control.extend({
+    options: { position: 'topleft' },
+    onAdd() {
+      const btn = L.DomUtil.create('button', 'leaflet-bar leaflet-control');
+      btn.title     = 'Imprimir mapa';
+      btn.innerHTML = '🖨️';
+      btn.style.cssText = 'width:34px;height:34px;font-size:18px;cursor:pointer;background:#fff;border:none;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 5px rgba(0,0,0,.4);border-radius:4px;';
+      L.DomEvent.disableClickPropagation(btn);
+      btn.onclick = () => window.print();
+      return btn;
+    }
+  });
+  new PrintControl().addTo(map);
 })
 .catch(err => console.error('Error cargando GeoJSON:', err));
 
