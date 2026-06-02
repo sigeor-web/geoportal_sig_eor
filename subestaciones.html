@@ -95,9 +95,19 @@
     <!-- Panel derecho: mapa -->
     <div id="map">
 
-      <!-- Control de capas personalizado -->
-      <div class="layer-panel">
+      <!-- Control de capas colapsable -->
+      <div class="layer-panel" id="layerPanel">
 
+        <!-- Botón toggle -->
+        <button id="layerToggleBtn" onclick="toggleLayerPanel()"
+          title="Mostrar/ocultar capas"
+          style="
+            position:absolute;top:8px;right:8px;
+            background:transparent;border:none;cursor:pointer;
+            color:#ccd6f6;font-size:16px;line-height:1;padding:2px;
+          ">✕</button>
+
+        <div id="layerPanelContent">
         <div class="layer-section">
           <div class="layer-section-title">Mapa base</div>
           <label class="layer-option">
@@ -152,7 +162,20 @@
           </label>
         </div>
 
+        </div><!-- /#layerPanelContent -->
       </div><!-- /.layer-panel -->
+
+      <!-- Botón flotante para reabrir el panel -->
+      <button id="layerOpenBtn" onclick="toggleLayerPanel()"
+        title="Mostrar capas"
+        style="
+          display:none;
+          position:absolute;top:10px;right:10px;z-index:1000;
+          background:#1a2744;color:#ccd6f6;border:none;
+          border-radius:6px;padding:6px 10px;cursor:pointer;
+          font-size:13px;font-weight:600;letter-spacing:.5px;
+          box-shadow:0 2px 8px rgba(0,0,0,.4);
+        ">☰ Capas</button>
 
     </div><!-- /#map -->
 
@@ -161,15 +184,33 @@
   <!-- Estilos de impresión -->
   <style>
     @media print {
-      body { margin: 0; }
-      .sidebar, .search-container, .layer-panel { display: none !important; }
-      #map { width: 100vw !important; height: 100vh !important; position: fixed !important; top:0; left:0; }
-      .leaflet-control-zoom, .leaflet-control-attribution { display: none !important; }
+      body, html { margin:0; padding:0; }
+      header, .table-panel, .layer-panel, #layerOpenBtn,
+      .leaflet-control-zoom, .leaflet-control-attribution,
+      .leaflet-bar { display: none !important; }
+      .main-container { display:block !important; }
+      #map {
+        position: fixed !important;
+        top: 0 !important; left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 0;
+      }
     }
   </style>
 
   <!-- JavaScript propio -->
   <script src="js/subestaciones.js"></script>
+
+  <script>
+    function toggleLayerPanel() {
+      const panel   = document.getElementById('layerPanel');
+      const openBtn = document.getElementById('layerOpenBtn');
+      const isHidden = panel.style.display === 'none';
+      panel.style.display   = isHidden ? '' : 'none';
+      openBtn.style.display = isHidden ? 'none' : 'block';
+    }
+  </script>
 
 </body>
 </html>
