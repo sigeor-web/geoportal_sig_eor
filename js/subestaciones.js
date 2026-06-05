@@ -206,9 +206,6 @@ Promise.all([
           `<span class="label-struct">${p.ESTRUCTURAENPOSTE || ''}</span>`
         );
         lyr.openTooltip();
-      } else if (z >= 13) {
-        tt.setContent(`<span class="label-code">${p.CODIGOELEMENTO || ''}</span>`);
-        lyr.openTooltip();
       } else {
         lyr.closeTooltip();
       }
