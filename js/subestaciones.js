@@ -185,22 +185,23 @@ Promise.all([
       // Tooltip permanente para etiquetas por zoom
       layer.bindTooltip('', {
         permanent:  true,
-        direction:  'top',
-        offset:     [0, -6],
+        direction:  'right',
+        offset:     [6, 0],
         className:  'poste-label'
       });
     }
   }).addTo(map);
 
-  // ── Etiquetas de postes según nivel de zoom ───────────────
-  // zoom >= 15 → código + estructura  |  zoom >= 13 → solo código  |  < 13 → oculto
+  // ── Etiquetas de postes (activadas desde panel de capas) ───
+  let labelsEnabled = false;
+
   function updatePosteLabels() {
     const z = map.getZoom();
     postesLayer.eachLayer(lyr => {
       const p  = lyr.feature.properties;
       const tt = lyr.getTooltip();
       if (!tt) return;
-      if (z >= 15) {
+      if (labelsEnabled && z >= 15) {
         tt.setContent(
           `<span class="label-code">${p.CODIGOELEMENTO || ''}</span>` +
           `<span class="label-struct">${p.ESTRUCTURAENPOSTE || ''}</span>`
@@ -212,9 +213,7 @@ Promise.all([
     });
   }
 
-  // Ejecutar al cargar y en cada cambio de zoom
   map.on('zoomend', updatePosteLabels);
-  setTimeout(updatePosteLabels, 300); // ejecuta tras renderizado inicial
 
   // 4. Subestaciones
   subestacionLayer = L.geoJSON(subData, {
@@ -257,6 +256,12 @@ Promise.all([
   new PrintControl().addTo(map);
 })
 .catch(err => console.error('Error cargando GeoJSON:', err));
+
+// ── Toggle etiquetas postes ─────────────────────────────────
+function togglePosteLabels(enabled) {
+  labelsEnabled = enabled;
+  updatePosteLabels();
+}
 
 // ── Control de capas ─────────────────────────────────────────
 function toggleLayer(name, visible) {
