@@ -181,8 +181,40 @@ Promise.all([
             </tr>
           </table>
         </div>`, { maxWidth: 260 });
+
+      // Tooltip permanente para etiquetas por zoom
+      layer.bindTooltip('', {
+        permanent:  true,
+        direction:  'top',
+        offset:     [0, -6],
+        className:  'poste-label'
+      });
     }
   }).addTo(map);
+
+  // ── Etiquetas de postes según nivel de zoom ───────────────
+  function updatePosteLabels() {
+    const z = map.getZoom();
+    postesLayer.eachLayer(lyr => {
+      const p  = lyr.feature.properties;
+      const tt = lyr.getTooltip();
+      if (!tt) return;
+      if (z >= 16) {
+        tt.setContent(
+          `<span class="label-code">${p.CODIGOELEMENTO || ''}</span>` +
+          `<span class="label-struct">${p.ESTRUCTURAENPOSTE || ''}</span>`
+        );
+        lyr.openTooltip();
+      } else if (z >= 14) {
+        tt.setContent(`<span class="label-code">${p.CODIGOELEMENTO || ''}</span>`);
+        lyr.openTooltip();
+      } else {
+        lyr.closeTooltip();
+      }
+    });
+  }
+
+  map.on('zoomend', updatePosteLabels);
 
   // 4. Subestaciones
   subestacionLayer = L.geoJSON(subData, {
