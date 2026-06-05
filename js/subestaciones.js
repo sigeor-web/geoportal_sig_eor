@@ -193,19 +193,20 @@ Promise.all([
   }).addTo(map);
 
   // ── Etiquetas de postes según nivel de zoom ───────────────
+  // zoom >= 15 → código + estructura  |  zoom >= 13 → solo código  |  < 13 → oculto
   function updatePosteLabels() {
     const z = map.getZoom();
     postesLayer.eachLayer(lyr => {
       const p  = lyr.feature.properties;
       const tt = lyr.getTooltip();
       if (!tt) return;
-      if (z >= 16) {
+      if (z >= 15) {
         tt.setContent(
           `<span class="label-code">${p.CODIGOELEMENTO || ''}</span>` +
           `<span class="label-struct">${p.ESTRUCTURAENPOSTE || ''}</span>`
         );
         lyr.openTooltip();
-      } else if (z >= 14) {
+      } else if (z >= 13) {
         tt.setContent(`<span class="label-code">${p.CODIGOELEMENTO || ''}</span>`);
         lyr.openTooltip();
       } else {
@@ -214,7 +215,9 @@ Promise.all([
     });
   }
 
+  // Ejecutar al cargar y en cada cambio de zoom
   map.on('zoomend', updatePosteLabels);
+  setTimeout(updatePosteLabels, 300); // ejecuta tras renderizado inicial
 
   // 4. Subestaciones
   subestacionLayer = L.geoJSON(subData, {
