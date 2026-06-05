@@ -181,6 +181,39 @@
 
   </div><!-- /.main-container -->
 
+  <!-- Estilos etiquetas postes -->
+  <style>
+    /* Tooltip base */
+    .poste-label {
+      background: rgba(26, 39, 68, 0.88) !important;
+      border: 1px solid #e67e22 !important;
+      border-radius: 3px !important;
+      padding: 2px 5px !important;
+      box-shadow: 0 1px 4px rgba(0,0,0,.4) !important;
+      white-space: nowrap;
+      line-height: 1.4;
+    }
+    .poste-label::before { display: none !important; }
+
+    /* Código elemento */
+    .label-code {
+      display: block;
+      font-size: 9px;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      color: #f0c040;
+      letter-spacing: 0.3px;
+    }
+    /* Estructura en poste (solo zoom ≥16) */
+    .label-struct {
+      display: block;
+      font-size: 8px;
+      font-weight: 600;
+      color: #e0e8ff;
+      margin-top: 1px;
+    }
+  </style>
+
   <!-- Estilos de impresión -->
   <style>
     @media print {
