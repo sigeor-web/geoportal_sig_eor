@@ -75,6 +75,28 @@ currentBase.addTo(map);
 let areaLayer, tramoLayer, postesLayer, subestacionLayer;
 const subMarkers = {};
 
+// ── Estado global de etiquetas ───────────────────────────────
+let labelsEnabled = false;
+
+function updatePosteLabels() {
+  if (!postesLayer) return;
+  const z = map.getZoom();
+  postesLayer.eachLayer(lyr => {
+    const p  = lyr.feature.properties;
+    const tt = lyr.getTooltip();
+    if (!tt) return;
+    if (labelsEnabled && z >= 15) {
+      tt.setContent(
+        `<span class="label-code">${p.CODIGOELEMENTO || ''}</span>` +
+        `<span class="label-struct">${p.ESTRUCTURAENPOSTE || ''}</span>`
+      );
+      lyr.openTooltip();
+    } else {
+      lyr.closeTooltip();
+    }
+  });
+}
+
 // ── Helpers ──────────────────────────────────────────────────
 function fmtFecha(iso) {
   if (!iso) return '-';
@@ -189,30 +211,11 @@ Promise.all([
         offset:     [6, 0],
         className:  'poste-label'
       });
+      layer.closeTooltip(); // oculto hasta que el usuario active la capa
     }
   }).addTo(map);
 
-  // ── Etiquetas de postes (activadas desde panel de capas) ───
-  let labelsEnabled = false;
-
-  function updatePosteLabels() {
-    const z = map.getZoom();
-    postesLayer.eachLayer(lyr => {
-      const p  = lyr.feature.properties;
-      const tt = lyr.getTooltip();
-      if (!tt) return;
-      if (labelsEnabled && z >= 15) {
-        tt.setContent(
-          `<span class="label-code">${p.CODIGOELEMENTO || ''}</span>` +
-          `<span class="label-struct">${p.ESTRUCTURAENPOSTE || ''}</span>`
-        );
-        lyr.openTooltip();
-      } else {
-        lyr.closeTooltip();
-      }
-    });
-  }
-
+  // Registrar evento zoom (función ya declarada globalmente)
   map.on('zoomend', updatePosteLabels);
 
   // 4. Subestaciones
