@@ -221,6 +221,10 @@
       text-shadow: 0 0 3px #fff, 0 0 3px #fff;
       margin-top: 1px;
     }
+
+    /* Control de visibilidad por CSS — mucho más eficiente que iterar layers */
+    #map.labels-off    .poste-label { display: none !important; }
+    #map.labels-zoom   .poste-label { display: none !important; }
   </style>
 
   <!-- Estilos de impresión -->
