@@ -75,27 +75,30 @@ currentBase.addTo(map);
 let areaLayer, tramoLayer, postesLayer, subestacionLayer;
 const subMarkers = {};
 
-// ── Estado global de etiquetas ───────────────────────────────
-let labelsEnabled = false;
+// ── Control de etiquetas por CSS (sin iterar layers) ────────
+const mapEl = document.getElementById('map');
 
-function updatePosteLabels() {
-  if (!postesLayer) return;
+function applyLabelVisibility() {
   const z = map.getZoom();
-  postesLayer.eachLayer(lyr => {
-    const p  = lyr.feature.properties;
-    const tt = lyr.getTooltip();
-    if (!tt) return;
-    if (labelsEnabled && z >= 15) {
-      tt.setContent(
-        `<span class="label-code">${p.CODIGOELEMENTO || ''}</span>` +
-        `<span class="label-struct">${p.ESTRUCTURAENPOSTE || ''}</span>`
-      );
-      lyr.openTooltip();
-    } else {
-      lyr.closeTooltip();
-    }
-  });
+  // labels-off  → checkbox desactivado
+  // labels-zoom → zoom insuficiente (< 15)
+  if (z < 15) {
+    mapEl.classList.add('labels-zoom');
+  } else {
+    mapEl.classList.remove('labels-zoom');
+  }
 }
+
+function togglePosteLabels(enabled) {
+  if (enabled) {
+    mapEl.classList.remove('labels-off');
+  } else {
+    mapEl.classList.add('labels-off');
+  }
+}
+
+// Iniciar con etiquetas ocultas
+mapEl.classList.add('labels-off');
 
 // ── Helpers ──────────────────────────────────────────────────
 function fmtFecha(iso) {
@@ -211,12 +214,22 @@ Promise.all([
         offset:     [6, 0],
         className:  'poste-label'
       });
-      layer.closeTooltip(); // oculto hasta que el usuario active la capa
     }
   }).addTo(map);
 
-  // Registrar evento zoom (función ya declarada globalmente)
-  map.on('zoomend', updatePosteLabels);
+  // Fijar contenido de cada tooltip una sola vez al cargar
+  postesLayer.eachLayer(lyr => {
+    const p  = lyr.feature.properties;
+    const tt = lyr.getTooltip();
+    if (tt) tt.setContent(
+      `<span class="label-code">${p.CODIGOELEMENTO || ''}</span>` +
+      `<span class="label-struct">${p.ESTRUCTURAENPOSTE || ''}</span>`
+    );
+  });
+
+  // Control de zoom vía CSS
+  map.on('zoomend', applyLabelVisibility);
+  applyLabelVisibility();
 
   // 4. Subestaciones
   subestacionLayer = L.geoJSON(subData, {
@@ -259,12 +272,6 @@ Promise.all([
   new PrintControl().addTo(map);
 })
 .catch(err => console.error('Error cargando GeoJSON:', err));
-
-// ── Toggle etiquetas postes ─────────────────────────────────
-function togglePosteLabels(enabled) {
-  labelsEnabled = enabled;
-  updatePosteLabels();
-}
 
 // ── Control de capas ─────────────────────────────────────────
 function toggleLayer(name, visible) {
