@@ -273,7 +273,7 @@ Promise.all([
 
   // ── Control: ir a coordenadas (Geográficas o UTM) ─────────
   const GoToControl = L.Control.extend({
-    options: { position: 'topleft' },
+    options: { position: 'bottomleft' },
     onAdd() {
       const box = L.DomUtil.create('div', 'coord-control');
       box.innerHTML = `
