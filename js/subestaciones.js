@@ -270,6 +270,71 @@ Promise.all([
     }
   });
   new PrintControl().addTo(map);
+
+  // ── Control: ir a coordenadas (Geográficas o UTM) ─────────
+  const GoToControl = L.Control.extend({
+    options: { position: 'topright' },
+    onAdd() {
+      const box = L.DomUtil.create('div', 'coord-control');
+      box.innerHTML = `
+        <label>📍 Ir a coordenadas</label>
+        <select id="coordType">
+          <option value="geo">Geográficas (Lat, Lon)</option>
+          <option value="utm">UTM (Zona 17S)</option>
+        </select>
+        <div class="coord-row">
+          <input id="coordX" type="text" placeholder="Lat / Norte (Y)">
+          <input id="coordY" type="text" placeholder="Lon / Este (X)">
+        </div>
+      `;
+      L.DomEvent.disableClickPropagation(box);
+
+      const inputX = box.querySelector('#coordX');
+      const inputY = box.querySelector('#coordY');
+      const select = box.querySelector('#coordType');
+
+      function goTo() {
+        const type = select.value;
+        const a = parseFloat(inputX.value);
+        const b = parseFloat(inputY.value);
+        if (isNaN(a) || isNaN(b)) return;
+
+        let lat, lng;
+        if (type === 'geo') {
+          lat = a; lng = b;
+        } else {
+          const r = utmToLatLng(b, a, 17, false); // UTM 17S (hemisferio sur)
+          lat = r.lat; lng = r.lng;
+        }
+        if (isNaN(lat) || isNaN(lng)) return;
+        map.setView([lat, lng], 17);
+        L.popup({ closeButton: true })
+          .setLatLng([lat, lng])
+          .setContent(`📍 ${lat.toFixed(6)}, ${lng.toFixed(6)}`)
+          .openOn(map);
+      }
+
+      // Placeholders dinámicos según tipo
+      select.addEventListener('change', () => {
+        if (select.value === 'utm') {
+          inputX.placeholder = 'Norte (Y)';
+          inputY.placeholder = 'Este (X)';
+        } else {
+          inputX.placeholder = 'Lat / Norte (Y)';
+          inputY.placeholder = 'Lon / Este (X)';
+        }
+      });
+
+      [inputX, inputY].forEach(inp => {
+        inp.addEventListener('keydown', e => {
+          if (e.key === 'Enter') goTo();
+        });
+      });
+
+      return box;
+    }
+  });
+  new GoToControl().addTo(map);
 })
 .catch(err => console.error('Error cargando GeoJSON:', err));
 
@@ -310,4 +375,58 @@ function filterTable() {
   document.querySelectorAll('#tableBody tr').forEach(row => {
     row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
   });
+}
+
+// ── Conversión UTM → WGS84 (geográficas) ─────────────────────
+// Implementación nativa basada en fórmulas de Karney/Snyder (sin librerías externas)
+function utmToLatLng(easting, northing, zone, isNorthern) {
+  const a = 6378137.0;          // semieje mayor WGS84
+  const f = 1 / 298.257223563;  // achatamiento
+  const k0 = 0.9996;
+  const e = Math.sqrt(f * (2 - f));
+  const e1sq = e * e / (1 - e * e);
+
+  let x = easting - 500000.0;
+  let y = northing;
+  if (!isNorthern) y -= 10000000.0; // hemisferio sur
+
+  const m = y / k0;
+  const mu = m / (a * (1 - e * e / 4 - 3 * Math.pow(e, 4) / 64 - 5 * Math.pow(e, 6) / 256));
+
+  const e1 = (1 - Math.sqrt(1 - e * e)) / (1 + Math.sqrt(1 - e * e));
+
+  const j1 = 3 * e1 / 2 - 27 * Math.pow(e1, 3) / 32;
+  const j2 = 21 * Math.pow(e1, 2) / 16 - 55 * Math.pow(e1, 4) / 32;
+  const j3 = 151 * Math.pow(e1, 3) / 96;
+  const j4 = 1097 * Math.pow(e1, 4) / 512;
+
+  const fp = mu + j1 * Math.sin(2 * mu) + j2 * Math.sin(4 * mu)
+           + j3 * Math.sin(6 * mu) + j4 * Math.sin(8 * mu);
+
+  const sinFp = Math.sin(fp), cosFp = Math.cos(fp), tanFp = Math.tan(fp);
+
+  const c1 = e1sq * cosFp * cosFp;
+  const t1 = tanFp * tanFp;
+  const r1 = a * (1 - e * e) / Math.pow(1 - e * e * sinFp * sinFp, 1.5);
+  const n1 = a / Math.sqrt(1 - e * e * sinFp * sinFp);
+  const d  = x / (n1 * k0);
+
+  const q1 = n1 * tanFp / r1;
+  const q2 = d * d / 2;
+  const q3 = (5 + 3 * t1 + 10 * c1 - 4 * c1 * c1 - 9 * e1sq) * Math.pow(d, 4) / 24;
+  const q4 = (61 + 90 * t1 + 298 * c1 + 45 * t1 * t1 - 3 * c1 * c1 - 252 * e1sq) * Math.pow(d, 6) / 720;
+
+  const lat = fp - q1 * (q2 - q3 + q4);
+
+  const q5 = d;
+  const q6 = (1 + 2 * t1 + c1) * Math.pow(d, 3) / 6;
+  const q7 = (5 - 2 * c1 + 28 * t1 - 3 * c1 * c1 + 8 * e1sq + 24 * t1 * t1) * Math.pow(d, 5) / 120;
+
+  const lonOriginRad = ((zone - 1) * 6 - 180 + 3) * Math.PI / 180;
+  const lon = lonOriginRad + (q5 - q6 + q7) / cosFp;
+
+  return {
+    lat: lat * 180 / Math.PI,
+    lng: lon * 180 / Math.PI
+  };
 }
