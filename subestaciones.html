@@ -225,6 +225,32 @@
     /* Control de visibilidad por CSS — mucho más eficiente que iterar layers */
     #map.labels-off    .poste-label { display: none !important; }
     #map.labels-zoom   .poste-label { display: none !important; }
+
+    /* Control de ir a coordenadas */
+    .coord-control {
+      background: rgba(26,39,68,.92);
+      color: #ccd6f6;
+      border-radius: 6px;
+      padding: 6px 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.4);
+      font-size: 12px;
+      width: 190px;
+    }
+    .coord-control select,
+    .coord-control input {
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 4px;
+      padding: 4px 6px;
+      border: 1px solid #3a4a6b;
+      border-radius: 4px;
+      background: #1a2744;
+      color: #fff;
+      font-size: 12px;
+    }
+    .coord-control .coord-row { display:flex; gap:4px; }
+    .coord-control .coord-row input { width:50%; }
+    .coord-control label { font-weight:600; font-size:11px; color:#9fb3e0; }
   </style>
 
   <!-- Estilos de impresión -->
