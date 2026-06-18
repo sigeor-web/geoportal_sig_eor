@@ -1,0 +1,25 @@
+{
+"type": "FeatureCollection",
+"name": "Agencias",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AGENCIA": "ARENILLAS     ", "ENCARGADO": "CAMPUZANO OROZCO JOE", "X": -3.552311, "Y": -80.061526 }, "geometry": { "type": "Point", "coordinates": [ -80.061526, -3.552311 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "ATAHUALPA     ", "ENCARGADO": "MU�OZ SANCHES MARIA EMILIA", "X": -3.588, "Y": -79.665713 }, "geometry": { "type": "Point", "coordinates": [ -79.665713, -3.588 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "BALAO         ", "ENCARGADO": "MARILU KATIUSKA CRUZ SANJIN�Z", "X": -2.906605, "Y": -79.815393 }, "geometry": { "type": "Point", "coordinates": [ -79.815393, -2.906605 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "BALSAS        ", "ENCARGADO": "APOLO GONZAGA FAVIAN GONZAGA ", "X": -3.759768, "Y": -79.825537 }, "geometry": { "type": "Point", "coordinates": [ -79.825537, -3.759768 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "CAMILO PONCE E", "ENCARGADO": "CRIOLLO DUMA JORGE MARCELO", "X": -3.065605, "Y": -79.748426 }, "geometry": { "type": "Point", "coordinates": [ -79.748426, -3.065605 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "CHILLA        ", "ENCARGADO": "VELEPUCHA MENDIA MARGOTH ALEXIS", "X": -3.456713, "Y": -79.581017 }, "geometry": { "type": "Point", "coordinates": [ -79.581017, -3.456713 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "EL GUABO      ", "ENCARGADO": "TITUANA ELIZALDE LENIN VLADIMIR", "X": -3.25357, "Y": -79.833818 }, "geometry": { "type": "Point", "coordinates": [ -79.833818, -3.25357 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "HUAQUILLAS    ", "ENCARGADO": "CORONEL RAMIREZ HUGO ENRIQUE ", "X": -3.484284, "Y": -80.216001 }, "geometry": { "type": "Point", "coordinates": [ -80.216001, -3.484284 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "LAS LAJAS     ", "ENCARGADO": "CORDOVA ZAPATA PAQUITO VICENTE", "X": -3.784668, "Y": -80.061644 }, "geometry": { "type": "Point", "coordinates": [ -80.061644, -3.784668 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "MACHALA       ", "ENCARGADO": "FREIRE LOAYZA MARIA FERNANDA", "X": -3.259845, "Y": -79.963279 }, "geometry": { "type": "Point", "coordinates": [ -79.963279, -3.259845 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "MARCABELI     ", "ENCARGADO": "GUEVARA EDINSON ARMANDO", "X": -3.785641, "Y": -79.911685 }, "geometry": { "type": "Point", "coordinates": [ -79.911685, -3.785641 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "PASAJE        ", "ENCARGADO": "ARIAS OCHOA KATIUSKA", "X": -3.3273732, "Y": -79.8082488 }, "geometry": { "type": "Point", "coordinates": [ -79.8082488, -3.3273732 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "PI�AS         ", "ENCARGADO": "YANCHAPAXI CELI JESSICA XIOMARA", "X": -3.68232, "Y": -79.68042 }, "geometry": { "type": "Point", "coordinates": [ -79.68042, -3.68232 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "PORTOVELO     ", "ENCARGADO": "MINGA CHUICO JUAN IVAN", "X": -3.7193116, "Y": -79.6212237 }, "geometry": { "type": "Point", "coordinates": [ -79.6212237, -3.7193116 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "SANTA ROSA    ", "ENCARGADO": "VALAREZO MACIAS MARY ELIZABETH", "X": -3.44844, "Y": -79.967185 }, "geometry": { "type": "Point", "coordinates": [ -79.967185, -3.44844 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "TENGUEL       ", "ENCARGADO": "LAMAR AGUILAR FREDY GIOVANNY", "X": -2.995591, "Y": -79.790315 }, "geometry": { "type": "Point", "coordinates": [ -79.790315, -2.995591 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "UZHCURRUMI    ", "ENCARGADO": "AGUILERA SALDA�A JOSE ALBERTO ", "X": -3.323926, "Y": -79.593711 }, "geometry": { "type": "Point", "coordinates": [ -79.593711, -3.323926 ] } },
+{ "type": "Feature", "properties": { "AGENCIA": "ZARUMA        ", "ENCARGADO": "PAZMI�O OROZCO CRISTOFER JOSE", "X": -3.688092, "Y": -79.616645 }, "geometry": { "type": "Point", "coordinates": [ -79.616645, -3.688092 ] } }
+]
+}
