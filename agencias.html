@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIG-EOR | Agencias</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="css/shared.css">
+
+  <style>
+    /* ── Layout ──────────────────────────────────────────────── */
+    .main-container { display:flex; flex:1; overflow:hidden; position:relative; }
+
+    /* ── Tabla lateral ───────────────────────────────────────── */
+    .table-panel {
+      width: 320px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .table-search {
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .table-search input {
+      width: 100%;
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .table-header table,
+    #tableBody table { width: 100%; border-collapse: collapse; }
+    .table-header {
+      flex-shrink: 0;
+      background: var(--primary);
+      color: rgba(255,255,255,.85);
+    }
+    .table-header th {
+      padding: 8px 10px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: left;
+    }
+    .table-scroll { overflow-y: auto; flex: 1; }
+    #tableBody tr {
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+    }
+    #tableBody tr:hover { background: #e8edf5; }
+    #tableBody tr.selected { background: #d0dff5; border-left: 3px solid var(--accent); }
+    #tableBody td {
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--text);
+    }
+    #tableBody td:first-child {
+      font-weight: 700;
+      color: var(--primary);
+      width: 28px;
+      text-align: center;
+    }
+
+    /* ── Panel de capas ──────────────────────────────────────── */
+    .layer-panel {
+      position: absolute;
+      top: 10px; right: 10px;
+      z-index: 1000;
+      background: rgba(26,39,68,.93);
+      color: #ccd6f6;
+      border-radius: 8px;
+      padding: 12px 14px;
+      min-width: 175px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+    }
+    .layer-panel-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .layer-panel-close {
+      background: none; border: none; color: #ccd6f6;
+      cursor: pointer; font-size: 14px; line-height:1;
+    }
+    .layer-section-title {
+      font-size: 10px; letter-spacing: 1px;
+      text-transform: uppercase; color: #7b93c4;
+      margin: 8px 0 4px; font-weight: 600;
+    }
+    .layer-option {
+      display: flex; align-items: center; gap: 8px;
+      padding: 3px 0; cursor: pointer;
+    }
+    .layer-option input { accent-color: #4db8ff; }
+    .legend-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%; flex-shrink: 0;
+    }
+    .legend-area {
+      width: 18px; height: 12px;
+      border-radius: 3px; flex-shrink: 0;
+    }
+    #layerOpenBtn {
+      position: absolute; top: 10px; right: 10px; z-index: 1000;
+      background: var(--primary); color: #ccd6f6; border: none;
+      border-radius: 6px; padding: 6px 10px; cursor: pointer;
+      font-size: 13px; font-weight: 600; letter-spacing: .5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.4);
+      display: none;
+    }
+
+    /* ── Print ───────────────────────────────────────────────── */
+    @media print {
+      body, html { margin:0; padding:0; }
+      header, .table-panel, .layer-panel, #layerOpenBtn,
+      .leaflet-control-zoom, .leaflet-control-attribution,
+      .leaflet-bar { display: none !important; }
+      .main-container { display: block !important; }
+      #map {
+        position: fixed !important;
+        top: 0 !important; left: 0 !important;
+        width: 100vw !important; height: 100vh !important;
+      }
+    }
+    /* Tooltip nombre de agencia */
+    .agencia-label {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+      color: #1a2744;
+      letter-spacing: .5px;
+      text-shadow: 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff;
+      white-space: nowrap;
+    }
+    .agencia-label::before { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- ── HEADER ──────────────────────────────────────────────── -->
+  <header>
+    <div style="display:flex;align-items:center;">
+      <a href="index.html" class="header-logo">SIG<span>-EOR</span></a>
+      <div class="header-divider"></div>
+      <div class="header-page">Agencias</div>
+    </div>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="tramos.html">Tramos</a>
+      <a href="alimentadores.html">Alimentadores</a>
+      <a href="mapa_alimentadores.html">Mapa Alim.</a>
+      <a href="agencias.html" class="active">Agencias</a>
+      <a href="Unifilar_eor.drawio_actual.html" target="_blank">Diagrama</a>
+    </nav>
+  </header>
+
+  <!-- ── CONTENIDO ───────────────────────────────────────────── -->
+  <div class="main-container">
+
+    <!-- Tabla lateral -->
+    <div class="table-panel">
+      <div class="table-search">
+        <input type="text" id="searchInput" placeholder="🔍  Buscar agencia..." oninput="filterTable()">
+      </div>
+      <div class="table-header">
+        <table>
+          <tr>
+            <th style="width:28px;">#</th>
+            <th>Agencia</th>
+            <th>Encargado</th>
+          </tr>
+        </table>
+      </div>
+      <div class="table-scroll">
+        <table><tbody id="tableBody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- Mapa -->
+    <div id="map"></div>
+
+    <!-- Panel capas -->
+    <div class="layer-panel" id="layerPanel">
+      <div class="layer-panel-title">
+        Capas
+        <button class="layer-panel-close" onclick="toggleLayerPanel()">✕</button>
+      </div>
+      <div id="layerPanelContent">
+        <div class="layer-section-title">Mapa base</div>
+        <label class="layer-option">
+          <input type="radio" name="basemap" value="osm" checked onchange="changeBasemap(this.value)">
+          OpenStreetMap
+        </label>
+        <label class="layer-option">
+          <input type="radio" name="basemap" value="satellite" onchange="changeBasemap(this.value)">
+          Satélite
+        </label>
+        <label class="layer-option">
+          <input type="radio" name="basemap" value="topo" onchange="changeBasemap(this.value)">
+          TopoMap
+        </label>
+
+        <div class="layer-section-title">Capas</div>
+        <label class="layer-option">
+          <div class="legend-area" style="background:rgba(74,158,110,.35);border:2px solid #1a2744;"></div>
+          <input type="checkbox" checked onchange="toggleLayer('area', this.checked)">
+          Área de Servicio
+        </label>
+        <label class="layer-option">
+          <div class="legend-dot" style="background:#e67e22;border:2px solid #c0392b;"></div>
+          <input type="checkbox" checked onchange="toggleLayer('agencias', this.checked)">
+          Agencias
+        </label>
+      </div>
+    </div>
+
+    <button id="layerOpenBtn" onclick="toggleLayerPanel()">☰ Capas</button>
+
+  </div>
+
+  <script src="js/agencias.js"></script>
+  <script>
+    function toggleLayerPanel() {
+      const panel   = document.getElementById('layerPanel');
+      const openBtn = document.getElementById('layerOpenBtn');
+      const hidden  = panel.style.display === 'none';
+      panel.style.display   = hidden ? '' : 'none';
+      openBtn.style.display = hidden ? 'none' : 'block';
+    }
+  </script>
+
+</body>
+</html>
